@@ -1,6 +1,8 @@
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
+import { downloadResults, shareResults } from '@/utils/exportResults';
+import { useToast } from '@/hooks/use-toast';
 
 interface RecommendationsSectionProps {
   depressionScore: number;
@@ -8,8 +10,28 @@ interface RecommendationsSectionProps {
 }
 
 const RecommendationsSection = ({ depressionScore, stressScore }: RecommendationsSectionProps) => {
+  const { toast } = useToast();
   const needsProfessionalHelp = depressionScore > 12 || stressScore > 12;
   const hasModerateSymptoms = depressionScore > 6 || stressScore > 6;
+
+  const handleDownload = () => {
+    downloadResults(depressionScore, stressScore);
+    toast({
+      title: 'Файл сохранён',
+      description: 'Результаты тестирования загружены на ваше устройство',
+    });
+  };
+
+  const handleShare = async () => {
+    const shared = await shareResults(depressionScore, stressScore);
+    if (!shared) {
+      downloadResults(depressionScore, stressScore);
+      toast({
+        title: 'Файл сохранён',
+        description: 'Вы можете поделиться сохранённым файлом',
+      });
+    }
+  };
 
   const generalRecommendations = [
     {
@@ -138,6 +160,17 @@ const RecommendationsSection = ({ depressionScore, stressScore }: Recommendation
           </div>
         </Card>
       )}
+
+      <div className="flex flex-col sm:flex-row justify-center gap-3 mt-6">
+        <Button size="lg" variant="outline" onClick={handleDownload} className="gap-2">
+          <Icon name="Download" size={20} />
+          Скачать результаты
+        </Button>
+        <Button size="lg" variant="outline" onClick={handleShare} className="gap-2">
+          <Icon name="Share2" size={20} />
+          Поделиться
+        </Button>
+      </div>
     </div>
   );
 };

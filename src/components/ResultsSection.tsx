@@ -2,6 +2,8 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import Icon from '@/components/ui/icon';
+import { downloadResults, shareResults } from '@/utils/exportResults';
+import { useToast } from '@/hooks/use-toast';
 
 interface ResultsSectionProps {
   depressionScore: number;
@@ -24,12 +26,32 @@ const getStressLevel = (score: number) => {
 };
 
 const ResultsSection = ({ depressionScore, stressScore, onViewRecommendations }: ResultsSectionProps) => {
+  const { toast } = useToast();
   const depressionResult = getDepressionLevel(depressionScore);
   const stressResult = getStressLevel(stressScore);
   const maxScore = 24;
 
   const overallScore = (depressionScore + stressScore) / 2;
   const needsProfessionalHelp = depressionScore > 12 || stressScore > 12;
+
+  const handleDownload = () => {
+    downloadResults(depressionScore, stressScore);
+    toast({
+      title: 'Файл сохранён',
+      description: 'Результаты тестирования загружены на ваше устройство',
+    });
+  };
+
+  const handleShare = async () => {
+    const shared = await shareResults(depressionScore, stressScore);
+    if (!shared) {
+      downloadResults(depressionScore, stressScore);
+      toast({
+        title: 'Файл сохранён',
+        description: 'Вы можете поделиться сохранённым файлом',
+      });
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -96,10 +118,18 @@ const ResultsSection = ({ depressionScore, stressScore, onViewRecommendations }:
           </div>
         )}
 
-        <div className="flex justify-center">
+        <div className="flex flex-col sm:flex-row justify-center gap-3">
           <Button size="lg" onClick={onViewRecommendations} className="gap-2">
             <Icon name="Lightbulb" size={20} />
             Посмотреть рекомендации
+          </Button>
+          <Button size="lg" variant="outline" onClick={handleDownload} className="gap-2">
+            <Icon name="Download" size={20} />
+            Скачать результаты
+          </Button>
+          <Button size="lg" variant="outline" onClick={handleShare} className="gap-2">
+            <Icon name="Share2" size={20} />
+            Поделиться
           </Button>
         </div>
       </Card>
