@@ -77,48 +77,48 @@ const TestSection = ({ onComplete }: TestSectionProps) => {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <Card className="p-8 shadow-lg">
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold text-gray-900">
+      <Card className="p-4 sm:p-8 shadow-lg">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex items-center justify-between mb-4 gap-2">
+            <h2 className="text-lg sm:text-2xl font-bold text-gray-900">
               {currentTest === 'depression' ? 'Тест на депрессию' : 'Тест на стресс'}
             </h2>
-            <span className="text-sm text-gray-500">
+            <span className="text-xs sm:text-sm text-gray-500 whitespace-nowrap">
               {currentQuestion + 1} из {questions.length}
             </span>
           </div>
           <Progress value={progress} className="h-2" />
         </div>
 
-        <div className="mb-8">
-          <p className="text-lg mb-6 text-gray-700">{questions[currentQuestion]}</p>
+        <div className="mb-6 sm:mb-8">
+          <p className="text-base sm:text-lg mb-4 sm:mb-6 text-gray-700 leading-relaxed">{questions[currentQuestion]}</p>
 
           <RadioGroup
             value={answers[currentQuestion]?.toString()}
             onValueChange={handleAnswer}
           >
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3 p-4 rounded-lg border-2 border-gray-200 hover:border-primary transition-colors cursor-pointer">
+            <div className="space-y-3 sm:space-y-4">
+              <div className="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-lg border-2 border-gray-200 hover:border-primary transition-colors cursor-pointer">
                 <RadioGroupItem value="0" id="option-0" />
-                <Label htmlFor="option-0" className="cursor-pointer flex-1">
+                <Label htmlFor="option-0" className="cursor-pointer flex-1 text-sm sm:text-base">
                   Совсем не согласен
                 </Label>
               </div>
-              <div className="flex items-center space-x-3 p-4 rounded-lg border-2 border-gray-200 hover:border-primary transition-colors cursor-pointer">
+              <div className="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-lg border-2 border-gray-200 hover:border-primary transition-colors cursor-pointer">
                 <RadioGroupItem value="1" id="option-1" />
-                <Label htmlFor="option-1" className="cursor-pointer flex-1">
+                <Label htmlFor="option-1" className="cursor-pointer flex-1 text-sm sm:text-base">
                   Скорее не согласен
                 </Label>
               </div>
-              <div className="flex items-center space-x-3 p-4 rounded-lg border-2 border-gray-200 hover:border-primary transition-colors cursor-pointer">
+              <div className="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-lg border-2 border-gray-200 hover:border-primary transition-colors cursor-pointer">
                 <RadioGroupItem value="2" id="option-2" />
-                <Label htmlFor="option-2" className="cursor-pointer flex-1">
+                <Label htmlFor="option-2" className="cursor-pointer flex-1 text-sm sm:text-base">
                   Скорее согласен
                 </Label>
               </div>
-              <div className="flex items-center space-x-3 p-4 rounded-lg border-2 border-gray-200 hover:border-primary transition-colors cursor-pointer">
+              <div className="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-lg border-2 border-gray-200 hover:border-primary transition-colors cursor-pointer">
                 <RadioGroupItem value="3" id="option-3" />
-                <Label htmlFor="option-3" className="cursor-pointer flex-1">
+                <Label htmlFor="option-3" className="cursor-pointer flex-1 text-sm sm:text-base">
                   Полностью согласен
                 </Label>
               </div>
@@ -126,25 +126,27 @@ const TestSection = ({ onComplete }: TestSectionProps) => {
           </RadioGroup>
         </div>
 
-        <div className="flex justify-between gap-4">
+        <div className="flex justify-between gap-2 sm:gap-4">
           <Button
             variant="outline"
             onClick={handleBack}
             disabled={currentTest === 'depression' && currentQuestion === 0}
-            className="gap-2"
+            className="gap-1 sm:gap-2 text-sm sm:text-base"
+            size="default"
           >
-            <Icon name="ChevronLeft" size={20} />
-            Назад
+            <Icon name="ChevronLeft" size={16} className="sm:w-5 sm:h-5" />
+            <span className="hidden xs:inline">Назад</span>
           </Button>
           <Button
             onClick={handleNext}
             disabled={!canProceed}
-            className="gap-2"
+            className="gap-1 sm:gap-2 text-sm sm:text-base"
+            size="default"
           >
             {currentQuestion === questions.length - 1 && currentTest === 'stress'
               ? 'Завершить'
               : 'Далее'}
-            <Icon name="ChevronRight" size={20} />
+            <Icon name="ChevronRight" size={16} className="sm:w-5 sm:h-5" />
           </Button>
         </div>
       </Card>
