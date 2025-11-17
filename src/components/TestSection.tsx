@@ -8,6 +8,7 @@ import Icon from '@/components/ui/icon';
 
 interface TestSectionProps {
   onComplete: (depressionScore: number, stressScore: number) => void;
+  onProgressUpdate: (progress: number) => void;
 }
 
 const depressionQuestions = [
@@ -32,7 +33,7 @@ const stressQuestions = [
   'У меня появились вредные привычки (переедание, курение, алкоголь)',
 ];
 
-const TestSection = ({ onComplete }: TestSectionProps) => {
+const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
   const [currentTest, setCurrentTest] = useState<'depression' | 'stress'>('depression');
   const [depressionAnswers, setDepressionAnswers] = useState<Record<number, number>>({});
   const [stressAnswers, setStressAnswers] = useState<Record<number, number>>({});
@@ -49,13 +50,29 @@ const TestSection = ({ onComplete }: TestSectionProps) => {
     setAnswers({ ...answers, [currentQuestion]: numValue });
   };
 
+  const calculateOverallProgress = (test: 'depression' | 'stress', questionIndex: number) => {
+    const totalQuestions = depressionQuestions.length + stressQuestions.length;
+    let completedQuestions = 0;
+    
+    if (test === 'depression') {
+      completedQuestions = questionIndex + 1;
+    } else {
+      completedQuestions = depressionQuestions.length + questionIndex + 1;
+    }
+    
+    return (completedQuestions / totalQuestions) * 100;
+  };
+
   const handleNext = () => {
     if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
+      const newQuestionIndex = currentQuestion + 1;
+      setCurrentQuestion(newQuestionIndex);
+      onProgressUpdate(calculateOverallProgress(currentTest, newQuestionIndex));
     } else {
       if (currentTest === 'depression') {
         setCurrentTest('stress');
         setCurrentQuestion(0);
+        onProgressUpdate(calculateOverallProgress('stress', 0));
       } else {
         const depScore = Object.values(depressionAnswers).reduce((a, b) => a + b, 0);
         const stressScore = Object.values(stressAnswers).reduce((a, b) => a + b, 0);

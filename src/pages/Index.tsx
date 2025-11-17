@@ -20,6 +20,7 @@ const Index = () => {
     stressScore: null,
     completed: false,
   });
+  const [overallProgress, setOverallProgress] = useState(0);
 
   const handleTestComplete = (depressionScore: number, stressScore: number) => {
     setTestResults({
@@ -27,7 +28,12 @@ const Index = () => {
       stressScore,
       completed: true,
     });
+    setOverallProgress(100);
     setActiveSection('results');
+  };
+
+  const handleProgressUpdate = (progress: number) => {
+    setOverallProgress(progress);
   };
 
   return (
@@ -42,6 +48,22 @@ const Index = () => {
             Пройдите тестирование и получите персональные рекомендации
           </p>
         </header>
+
+        {activeSection === 'tests' && !testResults.completed && (
+          <div className="max-w-3xl mx-auto mb-6 sm:mb-8 px-4">
+            <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm sm:text-base font-medium text-gray-700">
+                  Общий прогресс
+                </span>
+                <span className="text-xs sm:text-sm text-gray-500">
+                  {Math.round(overallProgress)}%
+                </span>
+              </div>
+              <Progress value={overallProgress} className="h-2 sm:h-3" />
+            </div>
+          </div>
+        )}
 
         <nav className="flex justify-center gap-2 sm:gap-4 mb-8 sm:mb-12 flex-wrap px-2">
           <Button
@@ -76,7 +98,12 @@ const Index = () => {
         </nav>
 
         <main>
-          {activeSection === 'tests' && <TestSection onComplete={handleTestComplete} />}
+          {activeSection === 'tests' && (
+            <TestSection 
+              onComplete={handleTestComplete} 
+              onProgressUpdate={handleProgressUpdate}
+            />
+          )}
           {activeSection === 'results' && testResults.completed && (
             <ResultsSection
               depressionScore={testResults.depressionScore!}
