@@ -1,3 +1,5 @@
+import { jsPDF } from 'jspdf';
+
 export const getDepressionLevel = (score: number) => {
   if (score <= 6) return 'Низкий';
   if (score <= 12) return 'Умеренный';
@@ -131,4 +133,188 @@ export const shareResults = async (depressionScore: number, stressScore: number)
   }
   
   return false;
+};
+
+export const downloadPDF = (depressionScore: number, stressScore: number) => {
+  const doc = new jsPDF();
+  const maxScore = 24;
+  const depressionLevel = getDepressionLevel(depressionScore);
+  const stressLevel = getStressLevel(stressScore);
+  const needsProfessionalHelp = depressionScore > 12 || stressScore > 12;
+  const hasModerateSymptoms = depressionScore > 6 || stressScore > 6;
+  const date = new Date().toLocaleDateString('ru-RU', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  let yPos = 20;
+  const pageWidth = doc.internal.pageSize.width;
+  const margin = 20;
+  const contentWidth = pageWidth - 2 * margin;
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.text('REZULTATY TESTIROVANIYA', pageWidth / 2, yPos, { align: 'center' });
+  yPos += 8;
+  doc.text('MENTALNOGO ZDOROVYA', pageWidth / 2, yPos, { align: 'center' });
+  yPos += 10;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(11);
+  doc.text(`Data prohozhdeniya: ${date}`, pageWidth / 2, yPos, { align: 'center' });
+  yPos += 15;
+
+  doc.setDrawColor(255, 160, 0);
+  doc.setLineWidth(0.5);
+  doc.line(margin, yPos, pageWidth - margin, yPos);
+  yPos += 10;
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(14);
+  doc.text('VASHI REZULTATY', margin, yPos);
+  yPos += 10;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Depressiya:', margin, yPos);
+  doc.setFont('helvetica', 'normal');
+  doc.text(`${depressionScore} iz ${maxScore} ballov`, margin + 50, yPos);
+  yPos += 7;
+  doc.text(`Uroven: ${depressionLevel}`, margin, yPos);
+  yPos += 12;
+
+  doc.setFont('helvetica', 'bold');
+  doc.text('Stress:', margin, yPos);
+  doc.setFont('helvetica', 'normal');
+  doc.text(`${stressScore} iz ${maxScore} ballov`, margin + 50, yPos);
+  yPos += 7;
+  doc.text(`Uroven: ${stressLevel}`, margin, yPos);
+  yPos += 15;
+
+  if (needsProfessionalHelp) {
+    doc.setDrawColor(255, 193, 7);
+    doc.setFillColor(255, 248, 225);
+    doc.rect(margin, yPos, contentWidth, 45, 'FD');
+    yPos += 8;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(12);
+    doc.text('VAZHNO: REKOMENDUETSYA KONSULTACIYA SPECIALISTA', margin + 5, yPos);
+    yPos += 8;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    const warningText = [
+      'Vashi rezultaty pokazyvayut, chto vam mozhet pomoch',
+      'professionalnaya podderzhka. Psiholog pomozhet razobratsya',
+      'v situacii i najti effektivnye resheniya.',
+    ];
+    warningText.forEach((line) => {
+      doc.text(line, margin + 5, yPos);
+      yPos += 6;
+    });
+
+    yPos += 5;
+    doc.setFont('helvetica', 'bold');
+    doc.text('Rekomenduemsya obratitsya v Kabinet horoshego psihologa:', margin + 5, yPos);
+    yPos += 6;
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(0, 0, 255);
+    doc.text('Sajt: https://kabinet-horoshego-psihologa.rf', margin + 5, yPos);
+    yPos += 6;
+    doc.setTextColor(0, 0, 0);
+    doc.text('WhatsApp: +7 960 258-60-60', margin + 5, yPos);
+    yPos += 15;
+  }
+
+  doc.setDrawColor(255, 160, 0);
+  doc.line(margin, yPos, pageWidth - margin, yPos);
+  yPos += 10;
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(14);
+  doc.text('REKOMENDACII PO ULUCHSHENIYU SOSTOYANIYA', margin, yPos);
+  yPos += 10;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+
+  const recommendations = [
+    { title: 'Zdorovyj son', desc: 'Starajtes spat 7-9 chasov v sutki. Soblyudajte rezhim sna.' },
+    { title: 'Fizicheskaya aktivnost', desc: 'Regulyarnye uprazhneniya pomogayut snizit stress i uluchshit nastroenie.' },
+    { title: 'Pravilnoe pitanie', desc: 'Sbalansirovannoe pitanie polozhitelno vliyaet na psihicheskoe sostoyanie.' },
+    { title: 'Socialnye kontakty', desc: 'Obshenie s blizkimi lyudmi pomogaet spravitsya s trudnostyami.' },
+    { title: 'Praktiki osoznannosti', desc: 'Meditaciya i dyhatelnye uprazhneniya pomogayut snizit trevozhnost.' },
+    { title: 'Hobbi i uvlecheniya', desc: 'Udelyajte vremya tomu, chto prinosit vam radost i udovolstvie.' },
+  ];
+
+  recommendations.forEach((rec, index) => {
+    if (yPos > 250) {
+      doc.addPage();
+      yPos = 20;
+    }
+
+    doc.setFont('helvetica', 'bold');
+    doc.text(`${index + 1}. ${rec.title}`, margin, yPos);
+    yPos += 6;
+    doc.setFont('helvetica', 'normal');
+    const lines = doc.splitTextToSize(rec.desc, contentWidth - 10);
+    lines.forEach((line: string) => {
+      doc.text(line, margin + 5, yPos);
+      yPos += 5;
+    });
+    yPos += 3;
+  });
+
+  if (hasModerateSymptoms && !needsProfessionalHelp) {
+    if (yPos > 240) {
+      doc.addPage();
+      yPos = 20;
+    }
+    yPos += 5;
+    doc.setDrawColor(33, 150, 243);
+    doc.setFillColor(227, 242, 253);
+    doc.rect(margin, yPos, contentWidth, 25, 'FD');
+    yPos += 8;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.text('SLEDITE ZA SVOIM SOSTOYANIEM', margin + 5, yPos);
+    yPos += 6;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    const infoLines = doc.splitTextToSize(
+      'Esli simptomy usilivayutsya ili ne prohodyat v techenie dlitelnogo vremeni, rekomenduetsya prokonsulirovatsya so specialistom.',
+      contentWidth - 10
+    );
+    infoLines.forEach((line: string) => {
+      doc.text(line, margin + 5, yPos);
+      yPos += 5;
+    });
+  }
+
+  if (yPos > 260) {
+    doc.addPage();
+    yPos = 20;
+  } else {
+    yPos = doc.internal.pageSize.height - 20;
+  }
+
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'italic');
+  doc.setTextColor(128, 128, 128);
+  const disclaimerLines = doc.splitTextToSize(
+    'Eto prilozhenie ne zamenyaet professionalnuyu medicinskuyu konsultaciyu. Rezultaty nosyat informacionnyj harakter.',
+    contentWidth
+  );
+  disclaimerLines.forEach((line: string) => {
+    doc.text(line, margin, yPos);
+    yPos += 4;
+  });
+
+  const dateStr = new Date().toLocaleDateString('ru-RU').replace(/\./g, '-');
+  doc.save(`rezultaty-testa-${dateStr}.pdf`);
 };

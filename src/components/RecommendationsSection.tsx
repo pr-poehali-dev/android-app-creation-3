@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
-import { downloadResults, shareResults } from '@/utils/exportResults';
+import { downloadResults, shareResults, downloadPDF } from '@/utils/exportResults';
 import { useToast } from '@/hooks/use-toast';
 
 interface RecommendationsSectionProps {
@@ -31,6 +31,14 @@ const RecommendationsSection = ({ depressionScore, stressScore }: Recommendation
         description: 'Вы можете поделиться сохранённым файлом',
       });
     }
+  };
+
+  const handleDownloadPDF = () => {
+    downloadPDF(depressionScore, stressScore);
+    toast({
+      title: 'PDF сохранён',
+      description: 'Результаты сохранены в формате PDF',
+    });
   };
 
   const generalRecommendations = [
@@ -162,9 +170,13 @@ const RecommendationsSection = ({ depressionScore, stressScore }: Recommendation
       )}
 
       <div className="flex flex-col sm:flex-row justify-center gap-3 mt-6">
+        <Button size="lg" variant="outline" onClick={handleDownloadPDF} className="gap-2">
+          <Icon name="FileText" size={20} />
+          Скачать PDF
+        </Button>
         <Button size="lg" variant="outline" onClick={handleDownload} className="gap-2">
           <Icon name="Download" size={20} />
-          Скачать результаты
+          Скачать TXT
         </Button>
         <Button size="lg" variant="outline" onClick={handleShare} className="gap-2">
           <Icon name="Share2" size={20} />
