@@ -6,6 +6,26 @@
 2. **Android Studio** - [скачать](https://developer.android.com/studio)
 3. **Java JDK** (версия 17 или выше)
 
+## Ресурсы приложения
+
+### Иконка и Splash Screen
+
+Для приложения созданы следующие ресурсы:
+
+**Иконка приложения:**
+https://cdn.poehali.dev/projects/01378875-58df-418f-af2c-1769c4edcbce/files/69092d63-422d-4a1b-ba69-94552c3f8051.jpg
+
+**Splash Screen (экран загрузки):**
+https://cdn.poehali.dev/projects/01378875-58df-418f-af2c-1769c4edcbce/files/24c60edd-5481-4652-8228-de0008cfc8b0.jpg
+
+Сохраните эти изображения и поместите их в следующие папки после создания Android-проекта:
+- Иконка: `android/app/src/main/res/mipmap-*` (разные размеры)
+- Splash: `android/app/src/main/res/drawable/splash.png`
+
+Для автоматической генерации иконок разных размеров можно использовать:
+- [Android Asset Studio](https://romannurik.github.io/AndroidAssetStudio/)
+- [Capacitor Assets](https://github.com/ionic-team/capacitor-assets)
+
 ## Шаги для создания Android-приложения
 
 ### 1. Установка зависимостей
