@@ -42,7 +42,7 @@ const Index = () => {
         <header className="text-center mb-8 sm:mb-12">
           <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
             <Icon name="Brain" size={32} className="text-primary sm:w-10 sm:h-10" />
-            <h1 className="text-2xl sm:text-4xl font-bold text-gray-900">Ментальное здоровье</h1>
+            <h1 className="text-2xl sm:text-4xl font-bold text-gray-900">Тест ментального здоровья</h1>
           </div>
           <p className="text-gray-600 text-sm sm:text-lg px-4">
             Пройдите тестирование и получите персональные рекомендации
@@ -120,9 +120,17 @@ const Index = () => {
         </main>
 
         <footer className="mt-12 sm:mt-16 text-center text-gray-500 text-xs sm:text-sm px-4">
-          <p>
+          <p className="mb-3">
             Это приложение не заменяет профессиональную медицинскую консультацию
           </p>
+          <a 
+            href="https://кабинет-хорошего-психолога.рф" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/80 underline transition-colors"
+          >
+            кабинет-хорошего-психолога.рф
+          </a>
         </footer>
       </div>
     </div>
