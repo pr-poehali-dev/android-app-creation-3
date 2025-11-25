@@ -92,37 +92,19 @@ const Index = () => {
           </div>
         )}
 
-        <nav className="flex justify-center gap-2 sm:gap-4 mb-8 sm:mb-12 flex-wrap px-2">
-          <Button
-            variant={activeSection === 'tests' ? 'default' : 'outline'}
-            size="default"
-            onClick={() => setActiveSection('tests')}
-            className="gap-1 sm:gap-2 text-xs sm:text-base px-3 sm:px-4 py-2 sm:py-3"
-          >
-            <Icon name="ClipboardList" size={16} className="sm:w-5 sm:h-5" />
-            <span className="hidden xs:inline">Тесты</span>
-          </Button>
-          <Button
-            variant={activeSection === 'results' ? 'default' : 'outline'}
-            size="default"
-            onClick={() => setActiveSection('results')}
-            disabled={!testResults.completed}
-            className="gap-1 sm:gap-2 text-xs sm:text-base px-3 sm:px-4 py-2 sm:py-3"
-          >
-            <Icon name="BarChart3" size={16} className="sm:w-5 sm:h-5" />
-            <span className="hidden xs:inline">Результаты</span>
-          </Button>
-          <Button
-            variant={activeSection === 'recommendations' ? 'default' : 'outline'}
-            size="default"
-            onClick={() => setActiveSection('recommendations')}
-            disabled={!testResults.completed}
-            className="gap-1 sm:gap-2 text-xs sm:text-base px-3 sm:px-4 py-2 sm:py-3"
-          >
-            <Icon name="Lightbulb" size={16} className="sm:w-5 sm:h-5" />
-            <span className="hidden xs:inline">Рекомендации</span>
-          </Button>
-        </nav>
+        {testResults.completed && (
+          <nav className="flex justify-center gap-2 sm:gap-4 mb-8 sm:mb-12 flex-wrap px-2">
+            <Button
+              variant={activeSection === 'tests' ? 'default' : 'outline'}
+              size="default"
+              onClick={() => setActiveSection('tests')}
+              className="gap-1 sm:gap-2 text-xs sm:text-base px-3 sm:px-4 py-2 sm:py-3"
+            >
+              <Icon name="ClipboardList" size={16} className="sm:w-5 sm:h-5" />
+              <span className="hidden xs:inline">Пройти заново</span>
+            </Button>
+          </nav>
+        )}
 
         <main>
           {activeSection === 'tests' && (
