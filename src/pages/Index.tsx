@@ -14,18 +14,21 @@ const Index = () => {
   const [testResults, setTestResults] = useState<{
     depressionScore: number | null;
     stressScore: number | null;
+    anxietyScore: number | null;
     completed: boolean;
   }>({
     depressionScore: null,
     stressScore: null,
+    anxietyScore: null,
     completed: false,
   });
   const [overallProgress, setOverallProgress] = useState(0);
 
-  const handleTestComplete = (depressionScore: number, stressScore: number) => {
+  const handleTestComplete = (depressionScore: number, stressScore: number, anxietyScore: number) => {
     setTestResults({
       depressionScore,
       stressScore,
+      anxietyScore,
       completed: true,
     });
     setOverallProgress(100);
@@ -40,12 +43,36 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50">
       <div className="container mx-auto px-4 py-4 sm:py-8 max-w-6xl">
         <header className="text-center mb-8 sm:mb-12">
+          <div className="flex flex-col items-center mb-6">
+            <img 
+              src="https://cdn.poehali.dev/files/0434f2d2-8b63-45cd-835e-3b1d2b34a2ce.png" 
+              alt="Кабинет хорошего психолога"
+              className="h-20 sm:h-24 mb-4 object-contain"
+            />
+            <div className="text-center">
+              <a 
+                href="https://кабинет-хорошего-психолога.рф" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-lg sm:text-xl font-semibold text-gray-900 hover:text-primary transition-colors"
+              >
+                кабинет-хорошего-психолога.рф
+              </a>
+              <a 
+                href="tel:+79602586060"
+                className="flex items-center justify-center gap-2 text-base sm:text-lg text-gray-700 hover:text-primary transition-colors mt-2"
+              >
+                <Icon name="Phone" size={18} className="sm:w-5 sm:h-5" />
+                +7 960 258-60-60
+              </a>
+            </div>
+          </div>
           <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
             <Icon name="Brain" size={32} className="text-primary sm:w-10 sm:h-10" />
-            <h1 className="text-2xl sm:text-4xl font-bold text-gray-900">Тест ментального здоровья</h1>
+            <h1 className="text-2xl sm:text-4xl font-bold text-gray-900">Тест ментального состояния</h1>
           </div>
           <p className="text-gray-600 text-sm sm:text-lg px-4">
-            Пройдите тестирование и получите персональные рекомендации
+            Комплексная оценка депрессии, стресса и тревожности
           </p>
         </header>
 
@@ -108,6 +135,7 @@ const Index = () => {
             <ResultsSection
               depressionScore={testResults.depressionScore!}
               stressScore={testResults.stressScore!}
+              anxietyScore={testResults.anxietyScore!}
               onViewRecommendations={() => setActiveSection('recommendations')}
             />
           )}
@@ -115,6 +143,7 @@ const Index = () => {
             <RecommendationsSection
               depressionScore={testResults.depressionScore!}
               stressScore={testResults.stressScore!}
+              anxietyScore={testResults.anxietyScore!}
             />
           )}
         </main>

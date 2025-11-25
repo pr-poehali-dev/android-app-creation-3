@@ -14,6 +14,13 @@ export const getStressLevel = (score: number) => {
   return 'Высокий';
 };
 
+export const getAnxietyLevel = (score: number) => {
+  if (score <= 6) return 'Низкий';
+  if (score <= 12) return 'Умеренный';
+  if (score <= 18) return 'Средний';
+  return 'Высокий';
+};
+
 const generalRecommendations = [
   {
     title: 'Здоровый сон',
@@ -41,12 +48,13 @@ const generalRecommendations = [
   },
 ];
 
-export const generateResultsText = (depressionScore: number, stressScore: number): string => {
+export const generateResultsText = (depressionScore: number, stressScore: number, anxietyScore: number): string => {
   const maxScore = 24;
   const depressionLevel = getDepressionLevel(depressionScore);
   const stressLevel = getStressLevel(stressScore);
-  const needsProfessionalHelp = depressionScore > 12 || stressScore > 12;
-  const hasModerateSymptoms = depressionScore > 6 || stressScore > 6;
+  const anxietyLevel = getAnxietyLevel(anxietyScore);
+  const needsProfessionalHelp = depressionScore > 12 || stressScore > 12 || anxietyScore > 12;
+  const hasModerateSymptoms = depressionScore > 6 || stressScore > 6 || anxietyScore > 6;
   const date = new Date().toLocaleDateString('ru-RU', {
     year: 'numeric',
     month: 'long',
@@ -100,8 +108,8 @@ export const generateResultsText = (depressionScore: number, stressScore: number
   return text;
 };
 
-export const downloadResults = (depressionScore: number, stressScore: number) => {
-  const text = generateResultsText(depressionScore, stressScore);
+export const downloadResults = (depressionScore: number, stressScore: number, anxietyScore: number) => {
+  const text = generateResultsText(depressionScore, stressScore, anxietyScore);
   const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
@@ -114,8 +122,8 @@ export const downloadResults = (depressionScore: number, stressScore: number) =>
   URL.revokeObjectURL(url);
 };
 
-export const shareResults = async (depressionScore: number, stressScore: number) => {
-  const text = generateResultsText(depressionScore, stressScore);
+export const shareResults = async (depressionScore: number, stressScore: number, anxietyScore: number) => {
+  const text = generateResultsText(depressionScore, stressScore, anxietyScore);
   
   if (navigator.share) {
     try {
@@ -135,13 +143,14 @@ export const shareResults = async (depressionScore: number, stressScore: number)
   return false;
 };
 
-export const downloadPDF = (depressionScore: number, stressScore: number) => {
+export const downloadPDF = (depressionScore: number, stressScore: number, anxietyScore: number) => {
   const doc = new jsPDF();
   const maxScore = 24;
   const depressionLevel = getDepressionLevel(depressionScore);
   const stressLevel = getStressLevel(stressScore);
-  const needsProfessionalHelp = depressionScore > 12 || stressScore > 12;
-  const hasModerateSymptoms = depressionScore > 6 || stressScore > 6;
+  const anxietyLevel = getAnxietyLevel(anxietyScore);
+  const needsProfessionalHelp = depressionScore > 12 || stressScore > 12 || anxietyScore > 12;
+  const hasModerateSymptoms = depressionScore > 6 || stressScore > 6 || anxietyScore > 6;
   const date = new Date().toLocaleDateString('ru-RU', {
     year: 'numeric',
     month: 'long',
@@ -191,6 +200,14 @@ export const downloadPDF = (depressionScore: number, stressScore: number) => {
   doc.text(`${stressScore} iz ${maxScore} ballov`, margin + 50, yPos);
   yPos += 7;
   doc.text(`Uroven: ${stressLevel}`, margin, yPos);
+  yPos += 12;
+
+  doc.setFont('helvetica', 'bold');
+  doc.text('Trevozhnost:', margin, yPos);
+  doc.setFont('helvetica', 'normal');
+  doc.text(`${anxietyScore} iz ${maxScore} ballov`, margin + 50, yPos);
+  yPos += 7;
+  doc.text(`Uroven: ${anxietyLevel}`, margin, yPos);
   yPos += 15;
 
   if (needsProfessionalHelp) {

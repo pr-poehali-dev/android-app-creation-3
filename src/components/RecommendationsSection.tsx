@@ -7,15 +7,16 @@ import { useToast } from '@/hooks/use-toast';
 interface RecommendationsSectionProps {
   depressionScore: number;
   stressScore: number;
+  anxietyScore: number;
 }
 
-const RecommendationsSection = ({ depressionScore, stressScore }: RecommendationsSectionProps) => {
+const RecommendationsSection = ({ depressionScore, stressScore, anxietyScore }: RecommendationsSectionProps) => {
   const { toast } = useToast();
-  const needsProfessionalHelp = depressionScore > 12 || stressScore > 12;
-  const hasModerateSymptoms = depressionScore > 6 || stressScore > 6;
+  const needsProfessionalHelp = depressionScore > 12 || stressScore > 12 || anxietyScore > 12;
+  const hasModerateSymptoms = depressionScore > 6 || stressScore > 6 || anxietyScore > 6;
 
   const handleDownload = () => {
-    downloadResults(depressionScore, stressScore);
+    downloadResults(depressionScore, stressScore, anxietyScore);
     toast({
       title: 'Файл сохранён',
       description: 'Результаты тестирования загружены на ваше устройство',
@@ -23,9 +24,9 @@ const RecommendationsSection = ({ depressionScore, stressScore }: Recommendation
   };
 
   const handleShare = async () => {
-    const shared = await shareResults(depressionScore, stressScore);
+    const shared = await shareResults(depressionScore, stressScore, anxietyScore);
     if (!shared) {
-      downloadResults(depressionScore, stressScore);
+      downloadResults(depressionScore, stressScore, anxietyScore);
       toast({
         title: 'Файл сохранён',
         description: 'Вы можете поделиться сохранённым файлом',
@@ -34,7 +35,7 @@ const RecommendationsSection = ({ depressionScore, stressScore }: Recommendation
   };
 
   const handleDownloadPDF = () => {
-    downloadPDF(depressionScore, stressScore);
+    downloadPDF(depressionScore, stressScore, anxietyScore);
     toast({
       title: 'PDF сохранён',
       description: 'Результаты сохранены в формате PDF',

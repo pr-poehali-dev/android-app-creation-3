@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import Icon from '@/components/ui/icon';
 
 interface TestSectionProps {
-  onComplete: (depressionScore: number, stressScore: number) => void;
+  onComplete: (depressionScore: number, stressScore: number, anxietyScore: number) => void;
   onProgressUpdate: (progress: number) => void;
 }
 
@@ -33,15 +33,27 @@ const stressQuestions = [
   'У меня появились вредные привычки (переедание, курение, алкоголь)',
 ];
 
+const anxietyQuestions = [
+  'Я часто испытываю беспокойство или волнение без видимой причины',
+  'Мне трудно контролировать свои тревожные мысли',
+  'Я избегаю определенных ситуаций, потому что они вызывают у меня беспокойство',
+  'У меня бывают внезапные приступы сильного страха или паники',
+  'Я часто чувствую напряжение в мышцах или дрожь',
+  'У меня учащается сердцебиение или возникает одышка в стрессовых ситуациях',
+  'Я постоянно беспокоюсь о будущем и возможных проблемах',
+  'Мне трудно находиться в толпе или замкнутых пространствах',
+];
+
 const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
-  const [currentTest, setCurrentTest] = useState<'depression' | 'stress'>('depression');
+  const [currentTest, setCurrentTest] = useState<'depression' | 'stress' | 'anxiety'>('depression');
   const [depressionAnswers, setDepressionAnswers] = useState<Record<number, number>>({});
   const [stressAnswers, setStressAnswers] = useState<Record<number, number>>({});
+  const [anxietyAnswers, setAnxietyAnswers] = useState<Record<number, number>>({});
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
-  const questions = currentTest === 'depression' ? depressionQuestions : stressQuestions;
-  const answers = currentTest === 'depression' ? depressionAnswers : stressAnswers;
-  const setAnswers = currentTest === 'depression' ? setDepressionAnswers : setStressAnswers;
+  const questions = currentTest === 'depression' ? depressionQuestions : currentTest === 'stress' ? stressQuestions : anxietyQuestions;
+  const answers = currentTest === 'depression' ? depressionAnswers : currentTest === 'stress' ? stressAnswers : anxietyAnswers;
+  const setAnswers = currentTest === 'depression' ? setDepressionAnswers : currentTest === 'stress' ? setStressAnswers : setAnxietyAnswers;
 
   const progress = ((currentQuestion + 1) / questions.length) * 100;
 
@@ -50,14 +62,16 @@ const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
     setAnswers({ ...answers, [currentQuestion]: numValue });
   };
 
-  const calculateOverallProgress = (test: 'depression' | 'stress', questionIndex: number) => {
-    const totalQuestions = depressionQuestions.length + stressQuestions.length;
+  const calculateOverallProgress = (test: 'depression' | 'stress' | 'anxiety', questionIndex: number) => {
+    const totalQuestions = depressionQuestions.length + stressQuestions.length + anxietyQuestions.length;
     let completedQuestions = 0;
     
     if (test === 'depression') {
       completedQuestions = questionIndex + 1;
-    } else {
+    } else if (test === 'stress') {
       completedQuestions = depressionQuestions.length + questionIndex + 1;
+    } else {
+      completedQuestions = depressionQuestions.length + stressQuestions.length + questionIndex + 1;
     }
     
     return (completedQuestions / totalQuestions) * 100;
@@ -73,10 +87,15 @@ const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
         setCurrentTest('stress');
         setCurrentQuestion(0);
         onProgressUpdate(calculateOverallProgress('stress', 0));
+      } else if (currentTest === 'stress') {
+        setCurrentTest('anxiety');
+        setCurrentQuestion(0);
+        onProgressUpdate(calculateOverallProgress('anxiety', 0));
       } else {
         const depScore = Object.values(depressionAnswers).reduce((a, b) => a + b, 0);
         const stressScore = Object.values(stressAnswers).reduce((a, b) => a + b, 0);
-        onComplete(depScore, stressScore);
+        const anxScore = Object.values(anxietyAnswers).reduce((a, b) => a + b, 0);
+        onComplete(depScore, stressScore, anxScore);
       }
     }
   };
@@ -87,6 +106,9 @@ const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
     } else if (currentTest === 'stress') {
       setCurrentTest('depression');
       setCurrentQuestion(depressionQuestions.length - 1);
+    } else if (currentTest === 'anxiety') {
+      setCurrentTest('stress');
+      setCurrentQuestion(stressQuestions.length - 1);
     }
   };
 
@@ -98,7 +120,7 @@ const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
         <div className="mb-6 sm:mb-8">
           <div className="flex items-center justify-between mb-4 gap-2">
             <h2 className="text-lg sm:text-2xl font-bold text-gray-900">
-              {currentTest === 'depression' ? 'Тест на депрессию' : 'Тест на стресс'}
+              {currentTest === 'depression' ? 'Тест на депрессию' : currentTest === 'stress' ? 'Тест на стресс' : 'Тест на тревожность'}
             </h2>
             <span className="text-xs sm:text-sm text-gray-500 whitespace-nowrap">
               {currentQuestion + 1} из {questions.length}
@@ -160,7 +182,7 @@ const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
             className="gap-1 sm:gap-2 text-sm sm:text-base"
             size="default"
           >
-            {currentQuestion === questions.length - 1 && currentTest === 'stress'
+            {currentQuestion === questions.length - 1 && currentTest === 'anxiety'
               ? 'Завершить'
               : 'Далее'}
             <Icon name="ChevronRight" size={16} className="sm:w-5 sm:h-5" />
