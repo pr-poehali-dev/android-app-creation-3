@@ -50,6 +50,7 @@ const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
   const [stressAnswers, setStressAnswers] = useState<Record<number, number>>({});
   const [anxietyAnswers, setAnxietyAnswers] = useState<Record<number, number>>({});
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [lastAnswer, setLastAnswer] = useState<number | undefined>(undefined);
 
   const questions = currentTest === 'depression' ? depressionQuestions : currentTest === 'stress' ? stressQuestions : anxietyQuestions;
   const answers = currentTest === 'depression' ? depressionAnswers : currentTest === 'stress' ? stressAnswers : anxietyAnswers;
@@ -60,6 +61,7 @@ const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
   const handleAnswer = (value: string) => {
     const numValue = parseInt(value);
     setAnswers({ ...answers, [currentQuestion]: numValue });
+    setLastAnswer(numValue);
   };
 
   const calculateOverallProgress = (test: 'depression' | 'stress' | 'anxiety', questionIndex: number) => {
@@ -82,15 +84,27 @@ const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
       const newQuestionIndex = currentQuestion + 1;
       setCurrentQuestion(newQuestionIndex);
       onProgressUpdate(calculateOverallProgress(currentTest, newQuestionIndex));
+      
+      if (answers[newQuestionIndex] === undefined && lastAnswer !== undefined) {
+        setAnswers({ ...answers, [newQuestionIndex]: lastAnswer });
+      }
     } else {
       if (currentTest === 'depression') {
         setCurrentTest('stress');
         setCurrentQuestion(0);
         onProgressUpdate(calculateOverallProgress('stress', 0));
+        
+        if (stressAnswers[0] === undefined && lastAnswer !== undefined) {
+          setStressAnswers({ ...stressAnswers, [0]: lastAnswer });
+        }
       } else if (currentTest === 'stress') {
         setCurrentTest('anxiety');
         setCurrentQuestion(0);
         onProgressUpdate(calculateOverallProgress('anxiety', 0));
+        
+        if (anxietyAnswers[0] === undefined && lastAnswer !== undefined) {
+          setAnxietyAnswers({ ...anxietyAnswers, [0]: lastAnswer });
+        }
       } else {
         const depScore = Object.values(depressionAnswers).reduce((a, b) => a + b, 0);
         const stressScore = Object.values(stressAnswers).reduce((a, b) => a + b, 0);
