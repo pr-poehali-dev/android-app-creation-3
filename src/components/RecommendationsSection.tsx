@@ -102,8 +102,8 @@ const RecommendationsSection = ({ depressionScore, stressScore, anxietyScore }: 
               </h3>
             </div>
             <p className="text-gray-700 mb-4 text-xs sm:text-base">
-              Профессиональный психолог с опытом работы более 15 лет. Специализируется на работе
-              с депрессией, тревожностью, стрессом и другими психологическими проблемами.
+              Профессиональный сертифицированный и аккредитованный психолог с опытом работы.
+              Специализируется на работе с депрессией, тревожностью, стрессом и другими психологическими проблемами.
             </p>
             <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3">
               <Button size="default" asChild className="gap-1 sm:gap-2 text-sm sm:text-base w-full sm:w-auto">
