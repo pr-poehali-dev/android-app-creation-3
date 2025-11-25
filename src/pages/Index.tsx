@@ -70,7 +70,7 @@ const Index = () => {
           </div>
           <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
             <Icon name="Brain" size={32} className="text-primary sm:w-10 sm:h-10" />
-            <h1 className="text-2xl sm:text-4xl font-bold text-gray-900">Тест ментального состояния</h1>
+            <h1 className="text-2xl sm:text-4xl font-bold text-gray-900">Тест ментального здоровья</h1>
           </div>
           <p className="text-gray-600 text-sm sm:text-lg px-4">
             Комплексная оценка депрессии, стресса и тревожности
