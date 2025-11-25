@@ -60,10 +60,6 @@ const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
   const handleAnswer = (value: string) => {
     const numValue = parseInt(value);
     setAnswers({ ...answers, [currentQuestion]: numValue });
-    
-    setTimeout(() => {
-      handleNext();
-    }, 300);
   };
 
   const calculateOverallProgress = (test: 'depression' | 'stress' | 'anxiety', questionIndex: number) => {
