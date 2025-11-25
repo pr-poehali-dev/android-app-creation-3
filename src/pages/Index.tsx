@@ -6,8 +6,9 @@ import Icon from '@/components/ui/icon';
 import TestSection from '@/components/TestSection';
 import ResultsSection from '@/components/ResultsSection';
 import RecommendationsSection from '@/components/RecommendationsSection';
+import ArticlesSection from '@/components/ArticlesSection';
 
-type Section = 'tests' | 'results' | 'recommendations';
+type Section = 'tests' | 'results' | 'recommendations' | 'articles';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState<Section>('tests');
@@ -92,8 +93,8 @@ const Index = () => {
           </div>
         )}
 
-        {testResults.completed && (
-          <nav className="flex justify-center gap-2 sm:gap-4 mb-8 sm:mb-12 flex-wrap px-2">
+        <nav className="flex justify-center gap-2 sm:gap-4 mb-8 sm:mb-12 flex-wrap px-2">
+          {testResults.completed && (
             <Button
               variant={activeSection === 'tests' ? 'default' : 'outline'}
               size="default"
@@ -103,8 +104,18 @@ const Index = () => {
               <Icon name="ClipboardList" size={16} className="sm:w-5 sm:h-5" />
               <span className="hidden xs:inline">Пройти заново</span>
             </Button>
-          </nav>
-        )}
+          )}
+          <Button
+            variant={activeSection === 'articles' ? 'default' : 'outline'}
+            size="default"
+            onClick={() => setActiveSection('articles')}
+            className="gap-1 sm:gap-2 text-xs sm:text-base px-3 sm:px-4 py-2 sm:py-3"
+          >
+            <Icon name="BookOpen" size={16} className="sm:w-5 sm:h-5" />
+            <span className="hidden xs:inline">Полезная информация</span>
+            <span className="xs:hidden">Статьи</span>
+          </Button>
+        </nav>
 
         <main>
           {activeSection === 'tests' && (
@@ -128,6 +139,7 @@ const Index = () => {
               anxietyScore={testResults.anxietyScore!}
             />
           )}
+          {activeSection === 'articles' && <ArticlesSection />}
         </main>
 
         <footer className="mt-12 sm:mt-16 text-center text-gray-500 text-xs sm:text-sm px-4">
