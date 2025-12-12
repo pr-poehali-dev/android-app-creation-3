@@ -45,7 +45,7 @@ const AboutTestSection = () => {
               </li>
               <li className="flex items-start gap-2">
                 <Icon name="CheckCircle" size={18} className="text-green-600 flex-shrink-0 mt-1" />
-                <span>Высокая точность диагностики (надёжность α > 0.87)</span>
+                <span>Высокая точность диагностики (надёжность α {'>'}  0.87)</span>
               </li>
             </ul>
           </section>
