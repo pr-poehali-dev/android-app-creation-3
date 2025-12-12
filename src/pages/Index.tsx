@@ -7,6 +7,7 @@ import TestSection from '@/components/TestSection';
 import ResultsSection from '@/components/ResultsSection';
 import RecommendationsSection from '@/components/RecommendationsSection';
 import ArticlesSection from '@/components/ArticlesSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
 
 type Section = 'tests' | 'results' | 'recommendations' | 'articles';
 
@@ -70,11 +71,25 @@ const Index = () => {
           </div>
           <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
             <Icon name="Brain" size={32} className="text-primary sm:w-10 sm:h-10" />
-            <h1 className="text-2xl sm:text-4xl font-bold text-gray-900">Тест ментального здоровья</h1>
+            <h1 className="text-2xl sm:text-4xl font-bold text-gray-900">Узнайте уровень стресса за 5 минут</h1>
           </div>
-          <p className="text-gray-600 text-sm sm:text-lg px-4">
-            Комплексная оценка депрессии, стресса и тревожности
+          <p className="text-gray-600 text-sm sm:text-lg px-4 mb-4">
+            ⚡ Научно обоснованный тест DASS-21 на депрессию, стресс и тревожность
           </p>
+          <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
+            <div className="flex items-center gap-1">
+              <Icon name="Users" size={16} />
+              <span>50 000+ прошли</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Icon name="Clock" size={16} />
+              <span>5 минут</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Icon name="CheckCircle" size={16} />
+              <span>Бесплатно</span>
+            </div>
+          </div>
         </header>
 
         {activeSection === 'tests' && !testResults.completed && (
@@ -119,10 +134,13 @@ const Index = () => {
 
         <main>
           {activeSection === 'tests' && (
-            <TestSection 
-              onComplete={handleTestComplete} 
-              onProgressUpdate={handleProgressUpdate}
-            />
+            <>
+              <TestimonialsSection />
+              <TestSection 
+                onComplete={handleTestComplete} 
+                onProgressUpdate={handleProgressUpdate}
+              />
+            </>
           )}
           {activeSection === 'results' && testResults.completed && (
             <ResultsSection

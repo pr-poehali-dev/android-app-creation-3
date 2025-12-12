@@ -4,6 +4,7 @@ import { Progress } from '@/components/ui/progress';
 import Icon from '@/components/ui/icon';
 import { downloadResults, shareResults, downloadPDF } from '@/utils/exportResults';
 import { useToast } from '@/hooks/use-toast';
+import ShareButton from '@/components/ShareButton';
 
 interface ResultsSectionProps {
   depressionScore: number;
@@ -344,18 +345,19 @@ const ResultsSection = ({ depressionScore, stressScore, anxietyScore, onViewReco
         )}
 
         <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-3 flex-wrap">
+          <Button 
+            onClick={onViewRecommendations}
+            size="lg"
+            className="gap-2 w-full sm:w-auto"
+          >
+            <Icon name="FileText" size={20} />
+            Получить рекомендации
+          </Button>
           <Button size="default" variant="outline" onClick={handleDownloadPDF} className="gap-1 sm:gap-2 text-sm sm:text-base w-full sm:w-auto">
             <Icon name="FileText" size={16} className="sm:w-5 sm:h-5" />
             Сохранить PDF
           </Button>
-          <Button size="default" variant="outline" onClick={handleDownload} className="gap-1 sm:gap-2 text-sm sm:text-base w-full sm:w-auto">
-            <Icon name="Download" size={16} className="sm:w-5 sm:h-5" />
-            Сохранить TXT
-          </Button>
-          <Button size="default" variant="outline" onClick={handleShare} className="gap-1 sm:gap-2 text-sm sm:text-base w-full sm:w-auto">
-            <Icon name="Share2" size={16} className="sm:w-5 sm:h-5" />
-            Поделиться
-          </Button>
+          <ShareButton />
         </div>
       </Card>
     </div>
