@@ -155,7 +155,7 @@ const BookingForm = () => {
             <div className="flex items-center justify-center mb-2">
               <Icon name="Heart" size={20} className="text-primary" />
             </div>
-            <p className="text-gray-600">Первая консультация бесплатно</p>
+            <p className="text-gray-600">Предварительная консультация бесплатно</p>
           </div>
         </div>
       </div>
