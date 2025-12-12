@@ -11,8 +11,9 @@ import TestimonialsSection from '@/components/TestimonialsSection';
 import LiveCounter from '@/components/LiveCounter';
 import LiveNotifications from '@/components/LiveNotifications';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import AboutTestSection from '@/components/AboutTestSection';
 
-type Section = 'tests' | 'results' | 'recommendations' | 'articles';
+type Section = 'tests' | 'results' | 'recommendations' | 'articles' | 'about';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState<Section>('tests');
@@ -126,6 +127,16 @@ const Index = () => {
             </Button>
           )}
           <Button
+            variant={activeSection === 'about' ? 'default' : 'outline'}
+            size="default"
+            onClick={() => setActiveSection('about')}
+            className="gap-1 sm:gap-2 text-xs sm:text-base px-3 sm:px-4 py-2 sm:py-3"
+          >
+            <Icon name="Info" size={16} className="sm:w-5 sm:h-5" />
+            <span className="hidden xs:inline">О тесте</span>
+            <span className="xs:hidden">Инфо</span>
+          </Button>
+          <Button
             variant={activeSection === 'articles' ? 'default' : 'outline'}
             size="default"
             onClick={() => setActiveSection('articles')}
@@ -162,6 +173,7 @@ const Index = () => {
               anxietyScore={testResults.anxietyScore!}
             />
           )}
+          {activeSection === 'about' && <AboutTestSection />}
           {activeSection === 'articles' && <ArticlesSection />}
         </main>
 
