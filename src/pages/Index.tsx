@@ -8,6 +8,7 @@ import ResultsSection from '@/components/ResultsSection';
 import RecommendationsSection from '@/components/RecommendationsSection';
 import ArticlesSection from '@/components/ArticlesSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
+import LiveCounter from '@/components/LiveCounter';
 
 type Section = 'tests' | 'results' | 'recommendations' | 'articles';
 
@@ -76,11 +77,7 @@ const Index = () => {
           <p className="text-gray-600 text-sm sm:text-lg px-4 mb-4">
             ⚡ Научно обоснованный тест DASS-21 на депрессию, стресс и тревожность
           </p>
-          <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
-            <div className="flex items-center gap-1">
-              <Icon name="Users" size={16} />
-              <span>50 000+ прошли</span>
-            </div>
+          <div className="flex items-center justify-center gap-4 text-sm text-gray-500 mb-6">
             <div className="flex items-center gap-1">
               <Icon name="Clock" size={16} />
               <span>5 минут</span>
@@ -89,6 +86,10 @@ const Index = () => {
               <Icon name="CheckCircle" size={16} />
               <span>Бесплатно</span>
             </div>
+          </div>
+          
+          <div className="max-w-2xl mx-auto px-4 mb-6">
+            <LiveCounter />
           </div>
         </header>
 
