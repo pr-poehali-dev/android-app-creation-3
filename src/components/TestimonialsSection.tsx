@@ -104,7 +104,7 @@ const TestimonialsSection = () => {
             </Button>
             <Button size="lg" variant="outline" asChild className="gap-2 text-base w-full sm:w-auto bg-white hover:bg-gray-50">
               <a
-                href="https://wa.me/79500233838"
+                href="https://wa.me/79602586060"
                 target="_blank"
                 rel="noopener noreferrer"
               >

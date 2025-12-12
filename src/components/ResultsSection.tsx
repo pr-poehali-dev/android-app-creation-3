@@ -5,6 +5,7 @@ import Icon from '@/components/ui/icon';
 import { downloadResults, shareResults, downloadPDF } from '@/utils/exportResults';
 import { useToast } from '@/hooks/use-toast';
 import ShareButton from '@/components/ShareButton';
+import BookingForm from '@/components/BookingForm';
 
 interface ResultsSectionProps {
   depressionScore: number;
@@ -360,6 +361,12 @@ const ResultsSection = ({ depressionScore, stressScore, anxietyScore, onViewReco
           <ShareButton />
         </div>
       </Card>
+
+      {needsProfessionalHelp && (
+        <div className="mt-8">
+          <BookingForm />
+        </div>
+      )}
     </div>
   );
 };
