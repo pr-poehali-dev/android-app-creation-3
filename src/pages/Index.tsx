@@ -135,11 +135,11 @@ const Index = () => {
         <main>
           {activeSection === 'tests' && (
             <>
-              <TestimonialsSection />
               <TestSection 
                 onComplete={handleTestComplete} 
                 onProgressUpdate={handleProgressUpdate}
               />
+              <TestimonialsSection />
             </>
           )}
           {activeSection === 'results' && testResults.completed && (
