@@ -44,6 +44,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50">
+      <LiveNotifications />
       <div className="container mx-auto px-4 py-4 sm:py-8 max-w-6xl">
         <header className="text-center mb-8 sm:mb-12">
           <div className="flex flex-col items-center mb-6">
