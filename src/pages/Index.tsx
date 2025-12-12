@@ -9,6 +9,8 @@ import RecommendationsSection from '@/components/RecommendationsSection';
 import ArticlesSection from '@/components/ArticlesSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import LiveCounter from '@/components/LiveCounter';
+import LiveNotifications from '@/components/LiveNotifications';
+import WhatsAppButton from '@/components/WhatsAppButton';
 
 type Section = 'tests' | 'results' | 'recommendations' | 'articles';
 
@@ -45,6 +47,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50">
       <LiveNotifications />
+      <WhatsAppButton />
       <div className="container mx-auto px-4 py-4 sm:py-8 max-w-6xl">
         <header className="text-center mb-8 sm:mb-12">
           <div className="flex flex-col items-center mb-6">
