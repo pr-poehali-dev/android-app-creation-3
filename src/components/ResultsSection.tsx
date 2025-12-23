@@ -2,7 +2,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import Icon from '@/components/ui/icon';
-import { downloadResults, shareResults, downloadPDF } from '@/utils/exportResults';
+import { downloadResults, shareResults } from '@/utils/exportResults';
 import { useToast } from '@/hooks/use-toast';
 import ShareButton from '@/components/ShareButton';
 import BookingForm from '@/components/BookingForm';
@@ -63,14 +63,6 @@ const ResultsSection = ({ depressionScore, stressScore, anxietyScore, onViewReco
         description: 'Вы можете поделиться сохранённым файлом',
       });
     }
-  };
-
-  const handleDownloadPDF = () => {
-    downloadPDF(depressionScore, stressScore, anxietyScore);
-    toast({
-      title: 'PDF сохранён',
-      description: 'Результаты сохранены в формате PDF',
-    });
   };
 
   return (
