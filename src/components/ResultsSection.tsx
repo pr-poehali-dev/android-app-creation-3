@@ -354,10 +354,6 @@ const ResultsSection = ({ depressionScore, stressScore, anxietyScore, onViewReco
             <Icon name="FileText" size={20} />
             Получить рекомендации
           </Button>
-          <Button size="default" variant="outline" onClick={handleDownloadPDF} className="gap-1 sm:gap-2 text-sm sm:text-base w-full sm:w-auto">
-            <Icon name="FileText" size={16} className="sm:w-5 sm:h-5" />
-            Сохранить PDF
-          </Button>
           <ShareButton />
         </div>
       </Card>
