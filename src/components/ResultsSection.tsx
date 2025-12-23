@@ -2,9 +2,8 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import Icon from '@/components/ui/icon';
-import { downloadResults, shareResults } from '@/utils/exportResults';
+import { shareResults } from '@/utils/exportResults';
 import { useToast } from '@/hooks/use-toast';
-import ShareButton from '@/components/ShareButton';
 import BookingForm from '@/components/BookingForm';
 
 interface ResultsSectionProps {
@@ -46,21 +45,17 @@ const ResultsSection = ({ depressionScore, stressScore, anxietyScore, onViewReco
   const needsProfessionalHelp = depressionScore > 12 || stressScore > 12 || anxietyScore > 12;
   const hasModerateSymptoms = depressionScore > 6 || stressScore > 6 || anxietyScore > 6;
 
-  const handleDownload = () => {
-    downloadResults(depressionScore, stressScore, anxietyScore);
-    toast({
-      title: 'Файл сохранён',
-      description: 'Результаты тестирования загружены на ваше устройство',
-    });
-  };
-
   const handleShare = async () => {
     const shared = await shareResults(depressionScore, stressScore, anxietyScore);
-    if (!shared) {
-      downloadResults(depressionScore, stressScore, anxietyScore);
+    if (shared) {
       toast({
-        title: 'Файл сохранён',
-        description: 'Вы можете поделиться сохранённым файлом',
+        title: 'Успешно поделились',
+        description: 'Результаты и рекомендации отправлены',
+      });
+    } else {
+      toast({
+        title: 'Ошибка',
+        description: 'Не удалось поделиться результатами',
       });
     }
   };
@@ -346,7 +341,15 @@ const ResultsSection = ({ depressionScore, stressScore, anxietyScore, onViewReco
             <Icon name="FileText" size={20} />
             Получить рекомендации
           </Button>
-          <ShareButton />
+          <Button 
+            onClick={handleShare}
+            size="lg"
+            variant="outline"
+            className="gap-2 w-full sm:w-auto"
+          >
+            <Icon name="Share2" size={20} />
+            Поделиться результатами
+          </Button>
         </div>
       </Card>
 

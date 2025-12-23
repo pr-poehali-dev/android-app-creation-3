@@ -1,5 +1,3 @@
-import { jsPDF } from 'jspdf';
-
 export const getDepressionLevel = (score: number) => {
   if (score <= 6) return 'Низкий';
   if (score <= 12) return 'Умеренный';
@@ -70,19 +68,50 @@ export const generateResultsText = (depressionScore: number, stressScore: number
   text += `Уровень: ${depressionLevel}\n\n`;
   text += `Стресс: ${stressScore} из ${maxScore} баллов\n`;
   text += `Уровень: ${stressLevel}\n\n`;
+  text += `Тревожность: ${anxietyScore} из ${maxScore} баллов\n`;
+  text += `Уровень: ${anxietyLevel}\n\n`;
+
+  text += `${'='.repeat(60)}\n\n`;
+  text += `📋 ДЕТАЛЬНЫЙ АНАЛИЗ СОСТОЯНИЯ\n\n`;
+  
+  if (depressionScore <= 6) {
+    text += `✅ Депрессия: По шкале депрессии ваши результаты в норме. Вы справляетесь с эмоциями и сохраняете интерес к жизни.\n\n`;
+  } else if (depressionScore <= 12) {
+    text += `⚠️ Депрессия: У вас наблюдаются легкие признаки депрессивного состояния. Возможно, вы чаще чувствуете грусть или потерю интереса к привычным занятиям. Важно обратить внимание на это и позаботиться о себе.\n\n`;
+  } else if (depressionScore <= 18) {
+    text += `🔴 Депрессия: Ваши результаты указывают на умеренную депрессию. Вы можете испытывать значительные трудности с настроением, сном и энергией. Профессиональная помощь психолога поможет справиться с этим состоянием.\n\n`;
+  } else {
+    text += `🆘 Депрессия: Высокий уровень депрессии требует внимания. Вы можете чувствовать сильную подавленность, беспомощность и потерю интереса к жизни. Очень важно обратиться к специалисту для получения поддержки.\n\n`;
+  }
+
+  if (stressScore <= 6) {
+    text += `✅ Стресс: Уровень стресса в норме. Вы хорошо справляетесь с жизненными вызовами и сохраняете спокойствие.\n\n`;
+  } else if (stressScore <= 12) {
+    text += `⚠️ Стресс: Вы испытываете умеренный стресс. Возможно, чувствуете перегрузку, раздражительность или трудности с расслаблением. Важно найти время для отдыха и восстановления.\n\n`;
+  } else if (stressScore <= 18) {
+    text += `🔴 Стресс: Высокий уровень стресса оказывает серьёзное влияние на вашу жизнь. Вы можете испытывать физические симптомы (головные боли, напряжение), трудности с концентрацией и принятием решений.\n\n`;
+  } else {
+    text += `🆘 Стресс: Критический уровень стресса. Вы находитесь в состоянии хронического перенапряжения, которое может серьёзно влиять на здоровье. Необходима помощь специалиста.\n\n`;
+  }
+
+  if (anxietyScore <= 6) {
+    text += `✅ Тревожность: Уровень тревожности в пределах нормы. Вы спокойны и уверенно чувствуете себя в большинстве ситуаций.\n\n`;
+  } else if (anxietyScore <= 12) {
+    text += `⚠️ Тревожность: У вас присутствует повышенная тревожность. Вы можете чаще беспокоиться о будущем, испытывать напряжение или трудности с контролем тревожных мыслей.\n\n`;
+  } else if (anxietyScore <= 18) {
+    text += `🔴 Тревожность: Высокий уровень тревожности может существенно снижать качество жизни. Вы можете избегать определённых ситуаций, испытывать физические симптомы (учащенное сердцебиение, одышка).\n\n`;
+  } else {
+    text += `🆘 Тревожность: Критически высокий уровень тревожности. Вы можете испытывать панические атаки, сильный страх без видимой причины. Необходимо обратиться за профессиональной помощью.\n\n`;
+  }
 
   if (needsProfessionalHelp) {
     text += `${'='.repeat(60)}\n\n`;
     text += `⚠️ ВАЖНО: РЕКОМЕНДУЕТСЯ КОНСУЛЬТАЦИЯ СПЕЦИАЛИСТА\n\n`;
-    text += `Ваши результаты показывают, что вам может помочь\n`;
-    text += `профессиональная поддержка. Психолог поможет разобраться\n`;
-    text += `в ситуации и найти эффективные решения.\n\n`;
-    text += `Рекомендуем обратиться в Кабинет хорошего психолога:\n`;
+    text += `Ваши результаты показывают, что вам может помочь профессиональная поддержка. Психолог поможет разобраться в ситуации и найти эффективные решения.\n\n`;
+    text += `📞 Кабинет хорошего психолога\n`;
     text += `Сайт: https://кабинет-хорошего-психолога.рф\n`;
     text += `WhatsApp: +7 960 258-60-60\n\n`;
-    text += `Профессиональный сертифицированный и аккредитованный психолог\n`;
-    text += `с опытом работы. Специализируется на работе с депрессией,\n`;
-    text += `тревожностью, стрессом и другими психологическими проблемами.\n\n`;
+    text += `Профессиональный сертифицированный и аккредитованный психолог с опытом работы. Специализируется на работе с депрессией, тревожностью, стрессом и другими психологическими проблемами.\n\n`;
   }
 
   text += `${'='.repeat(60)}\n\n`;
@@ -96,30 +125,13 @@ export const generateResultsText = (depressionScore: number, stressScore: number
   if (hasModerateSymptoms && !needsProfessionalHelp) {
     text += `${'='.repeat(60)}\n\n`;
     text += `ℹ️ СЛЕДИТЕ ЗА СВОИМ СОСТОЯНИЕМ\n\n`;
-    text += `Если симптомы усиливаются или не проходят в течение\n`;
-    text += `длительного времени, рекомендуется проконсультироваться\n`;
-    text += `со специалистом.\n\n`;
+    text += `Если симптомы усиливаются или не проходят в течение длительного времени, рекомендуется проконсультироваться со специалистом.\n\n`;
   }
 
   text += `${'='.repeat(60)}\n\n`;
-  text += `Это приложение не заменяет профессиональную медицинскую\n`;
-  text += `консультацию. Результаты носят информационный характер.\n`;
+  text += `Это приложение не заменяет профессиональную медицинскую консультацию. Результаты носят информационный характер.\n`;
 
   return text;
-};
-
-export const downloadResults = (depressionScore: number, stressScore: number, anxietyScore: number) => {
-  const text = generateResultsText(depressionScore, stressScore, anxietyScore);
-  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  const date = new Date().toLocaleDateString('ru-RU').replace(/\./g, '-');
-  link.href = url;
-  link.download = `результаты-теста-${date}.txt`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
 };
 
 export const shareResults = async (depressionScore: number, stressScore: number, anxietyScore: number) => {
@@ -141,197 +153,4 @@ export const shareResults = async (depressionScore: number, stressScore: number,
   }
   
   return false;
-};
-
-export const downloadPDF = (depressionScore: number, stressScore: number, anxietyScore: number) => {
-  const doc = new jsPDF();
-  const maxScore = 24;
-  const depressionLevel = getDepressionLevel(depressionScore);
-  const stressLevel = getStressLevel(stressScore);
-  const anxietyLevel = getAnxietyLevel(anxietyScore);
-  const needsProfessionalHelp = depressionScore > 12 || stressScore > 12 || anxietyScore > 12;
-  const hasModerateSymptoms = depressionScore > 6 || stressScore > 6 || anxietyScore > 6;
-  const date = new Date().toLocaleDateString('ru-RU', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-
-  let yPos = 20;
-  const pageWidth = doc.internal.pageSize.width;
-  const margin = 20;
-  const contentWidth = pageWidth - 2 * margin;
-
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(18);
-  doc.text('REZULTATY TESTIROVANIYA', pageWidth / 2, yPos, { align: 'center' });
-  yPos += 8;
-  doc.text('MENTALNOGO ZDOROVYA', pageWidth / 2, yPos, { align: 'center' });
-  yPos += 10;
-
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(11);
-  doc.text(`Data prohozhdeniya: ${date}`, pageWidth / 2, yPos, { align: 'center' });
-  yPos += 15;
-
-  doc.setDrawColor(255, 160, 0);
-  doc.setLineWidth(0.5);
-  doc.line(margin, yPos, pageWidth - margin, yPos);
-  yPos += 10;
-
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(14);
-  doc.text('VASHI REZULTATY', margin, yPos);
-  yPos += 10;
-
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(12);
-  doc.setFont('helvetica', 'bold');
-  doc.text('Depressiya:', margin, yPos);
-  doc.setFont('helvetica', 'normal');
-  doc.text(`${depressionScore} iz ${maxScore} ballov`, margin + 50, yPos);
-  yPos += 7;
-  doc.text(`Uroven: ${depressionLevel}`, margin, yPos);
-  yPos += 12;
-
-  doc.setFont('helvetica', 'bold');
-  doc.text('Stress:', margin, yPos);
-  doc.setFont('helvetica', 'normal');
-  doc.text(`${stressScore} iz ${maxScore} ballov`, margin + 50, yPos);
-  yPos += 7;
-  doc.text(`Uroven: ${stressLevel}`, margin, yPos);
-  yPos += 12;
-
-  doc.setFont('helvetica', 'bold');
-  doc.text('Trevozhnost:', margin, yPos);
-  doc.setFont('helvetica', 'normal');
-  doc.text(`${anxietyScore} iz ${maxScore} ballov`, margin + 50, yPos);
-  yPos += 7;
-  doc.text(`Uroven: ${anxietyLevel}`, margin, yPos);
-  yPos += 15;
-
-  if (needsProfessionalHelp) {
-    doc.setDrawColor(255, 193, 7);
-    doc.setFillColor(255, 248, 225);
-    doc.rect(margin, yPos, contentWidth, 45, 'FD');
-    yPos += 8;
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(12);
-    doc.text('VAZHNO: REKOMENDUETSYA KONSULTACIYA SPECIALISTA', margin + 5, yPos);
-    yPos += 8;
-
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(10);
-    const warningText = [
-      'Vashi rezultaty pokazyvayut, chto vam mozhet pomoch',
-      'professionalnaya podderzhka. Psiholog pomozhet razobratsya',
-      'v situacii i najti effektivnye resheniya.',
-    ];
-    warningText.forEach((line) => {
-      doc.text(line, margin + 5, yPos);
-      yPos += 6;
-    });
-
-    yPos += 5;
-    doc.setFont('helvetica', 'bold');
-    doc.text('Rekomenduemsya obratitsya v Kabinet horoshego psihologa:', margin + 5, yPos);
-    yPos += 6;
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(0, 0, 255);
-    doc.text('Sajt: https://kabinet-horoshego-psihologa.rf', margin + 5, yPos);
-    yPos += 6;
-    doc.setTextColor(0, 0, 0);
-    doc.text('WhatsApp: +7 960 258-60-60', margin + 5, yPos);
-    yPos += 15;
-  }
-
-  doc.setDrawColor(255, 160, 0);
-  doc.line(margin, yPos, pageWidth - margin, yPos);
-  yPos += 10;
-
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(14);
-  doc.text('REKOMENDACII PO ULUCHSHENIYU SOSTOYANIYA', margin, yPos);
-  yPos += 10;
-
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10);
-
-  const recommendations = [
-    { title: 'Zdorovyj son', desc: 'Starajtes spat 7-9 chasov v sutki. Soblyudajte rezhim sna.' },
-    { title: 'Fizicheskaya aktivnost', desc: 'Regulyarnye uprazhneniya pomogayut snizit stress i uluchshit nastroenie.' },
-    { title: 'Pravilnoe pitanie', desc: 'Sbalansirovannoe pitanie polozhitelno vliyaet na psihicheskoe sostoyanie.' },
-    { title: 'Socialnye kontakty', desc: 'Obshenie s blizkimi lyudmi pomogaet spravitsya s trudnostyami.' },
-    { title: 'Praktiki osoznannosti', desc: 'Meditaciya i dyhatelnye uprazhneniya pomogayut snizit trevozhnost.' },
-    { title: 'Hobbi i uvlecheniya', desc: 'Udelyajte vremya tomu, chto prinosit vam radost i udovolstvie.' },
-  ];
-
-  recommendations.forEach((rec, index) => {
-    if (yPos > 250) {
-      doc.addPage();
-      yPos = 20;
-    }
-
-    doc.setFont('helvetica', 'bold');
-    doc.text(`${index + 1}. ${rec.title}`, margin, yPos);
-    yPos += 6;
-    doc.setFont('helvetica', 'normal');
-    const lines = doc.splitTextToSize(rec.desc, contentWidth - 10);
-    lines.forEach((line: string) => {
-      doc.text(line, margin + 5, yPos);
-      yPos += 5;
-    });
-    yPos += 3;
-  });
-
-  if (hasModerateSymptoms && !needsProfessionalHelp) {
-    if (yPos > 240) {
-      doc.addPage();
-      yPos = 20;
-    }
-    yPos += 5;
-    doc.setDrawColor(33, 150, 243);
-    doc.setFillColor(227, 242, 253);
-    doc.rect(margin, yPos, contentWidth, 25, 'FD');
-    yPos += 8;
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
-    doc.text('SLEDITE ZA SVOIM SOSTOYANIEM', margin + 5, yPos);
-    yPos += 6;
-
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9);
-    const infoLines = doc.splitTextToSize(
-      'Esli simptomy usilivayutsya ili ne prohodyat v techenie dlitelnogo vremeni, rekomenduetsya prokonsulirovatsya so specialistom.',
-      contentWidth - 10
-    );
-    infoLines.forEach((line: string) => {
-      doc.text(line, margin + 5, yPos);
-      yPos += 5;
-    });
-  }
-
-  if (yPos > 260) {
-    doc.addPage();
-    yPos = 20;
-  } else {
-    yPos = doc.internal.pageSize.height - 20;
-  }
-
-  doc.setFontSize(8);
-  doc.setFont('helvetica', 'italic');
-  doc.setTextColor(128, 128, 128);
-  const disclaimerLines = doc.splitTextToSize(
-    'Eto prilozhenie ne zamenyaet professionalnuyu medicinskuyu konsultaciyu. Rezultaty nosyat informacionnyj harakter.',
-    contentWidth
-  );
-  disclaimerLines.forEach((line: string) => {
-    doc.text(line, margin, yPos);
-    yPos += 4;
-  });
-
-  const dateStr = new Date().toLocaleDateString('ru-RU').replace(/\./g, '-');
-  doc.save(`rezultaty-testa-${dateStr}.pdf`);
 };
