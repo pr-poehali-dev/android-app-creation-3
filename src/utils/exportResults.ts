@@ -46,27 +46,31 @@ const generalRecommendations = [
   },
 ];
 
-export const generateResultsText = (depressionScore: number, stressScore: number, anxietyScore: number): string => {
+export const generateResultsText = (depressionScore: number, stressScore: number, anxietyScore: number, burnoutScore = 0, neuroScore = 0): string => {
   const maxScore = 24;
   const depressionLevel = getDepressionLevel(depressionScore);
   const stressLevel = getStressLevel(stressScore);
   const anxietyLevel = getAnxietyLevel(anxietyScore);
-  const needsProfessionalHelp = depressionScore > 12 || stressScore > 12 || anxietyScore > 12;
-  const hasModerateSymptoms = depressionScore > 6 || stressScore > 6 || anxietyScore > 6;
+  const burnoutLevel = burnoutScore <= 6 ? 'Низкий' : burnoutScore <= 12 ? 'Умеренный' : burnoutScore <= 18 ? 'Средний' : 'Высокий';
+  const neuroLevel = neuroScore <= 6 ? 'Низкий' : neuroScore <= 12 ? 'Умеренный' : neuroScore <= 18 ? 'Средний' : 'Высокий';
+  const needsProfessionalHelp = depressionScore > 12 || stressScore > 12 || anxietyScore > 12 || burnoutScore > 12 || neuroScore > 12;
+  const hasModerateSymptoms = depressionScore > 6 || stressScore > 6 || anxietyScore > 6 || burnoutScore > 6 || neuroScore > 6;
   const date = new Date().toLocaleDateString('ru-RU', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
 
-  let text = `✨ РЕЗУЛЬТАТЫ ТЕСТИРОВАНИЯ МЕНТАЛЬНОГО ЗДОРОВЬЯ ✨\n`;
+  let text = `🧠 РЕЗУЛЬТАТЫ НЕЙРОДИАГНОСТИКИ МЕНТАЛЬНОГО ЗДОРОВЬЯ 🧠\n`;
   text += `Дата: ${date}\n`;
   text += `\n${'━'.repeat(60)}\n\n`;
 
   text += `📊 ВАШИ ПОКАЗАТЕЛИ:\n\n`;
-  text += `🧠 Депрессия: ${depressionScore} из ${maxScore} — ${depressionLevel} уровень\n`;
+  text += `🧠 Психологическое состояние: ${depressionScore} из ${maxScore} — ${depressionLevel} уровень\n`;
   text += `⚡ Стресс: ${stressScore} из ${maxScore} — ${stressLevel} уровень\n`;
-  text += `💭 Тревожность: ${anxietyScore} из ${maxScore} — ${anxietyLevel} уровень\n\n`;
+  text += `💭 Тревожность: ${anxietyScore} из ${maxScore} — ${anxietyLevel} уровень\n`;
+  text += `🔥 Эмоциональное выгорание: ${burnoutScore} из ${maxScore} — ${burnoutLevel} уровень\n`;
+  text += `🔬 Нейродиагностика: ${neuroScore} из ${maxScore} — ${neuroLevel} уровень\n\n`;
 
   text += `${'━'.repeat(60)}\n\n`;
   text += `🔍 ЧТО ЭТО ЗНАЧИТ ДЛЯ ВАС:\n\n`;
@@ -152,13 +156,13 @@ export const generateResultsText = (depressionScore: number, stressScore: number
   return text;
 };
 
-export const shareResults = async (depressionScore: number, stressScore: number, anxietyScore: number) => {
-  const text = generateResultsText(depressionScore, stressScore, anxietyScore);
+export const shareResults = async (depressionScore: number, stressScore: number, anxietyScore: number, burnoutScore = 0, neuroScore = 0) => {
+  const text = generateResultsText(depressionScore, stressScore, anxietyScore, burnoutScore, neuroScore);
   
   if (navigator.share) {
     try {
       await navigator.share({
-        title: 'Мои результаты теста на ментальное здоровье',
+        title: 'Результаты нейродиагностики ментального здоровья',
         text: text,
       });
       return true;

@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import Icon from '@/components/ui/icon';
 
 interface TestSectionProps {
-  onComplete: (depressionScore: number, stressScore: number, anxietyScore: number) => void;
+  onComplete: (depressionScore: number, stressScore: number, anxietyScore: number, burnoutScore: number, neuroScore: number) => void;
   onProgressUpdate: (progress: number) => void;
 }
 
@@ -19,7 +19,7 @@ const depressionQuestions = [
   'У меня изменился аппетит (значительно снизился или увеличился)',
   'Мне трудно концентрироваться на работе или других задачах',
   'Я чувствую себя никчемным или испытываю чрезмерное чувство вины',
-  'У меня бывают мысли о смерти или самоповреждении',
+  'У меня бывают мысли о том, что жизнь не имеет смысла',
 ];
 
 const stressQuestions = [
@@ -44,72 +44,127 @@ const anxietyQuestions = [
   'Мне трудно находиться в толпе или замкнутых пространствах',
 ];
 
+const burnoutQuestions = [
+  'Я чувствую эмоциональное истощение от своей работы или повседневных обязанностей',
+  'К концу дня я чувствую себя полностью выжатым(ой), без сил',
+  'Я стал(а) более циничным(ой) и равнодушным(ой) к людям вокруг меня',
+  'Меня ничего не радует — ни работа, ни хобби, ни общение с близкими',
+  'Я чувствую, что моя деятельность теряет смысл и ценность',
+  'У меня снизилась продуктивность, хотя я стараюсь работать как прежде',
+  'Я откладываю дела и избегаю ответственности, которую раньше принимал(а) легко',
+  'Я чувствую, что отдаю всё, а взамен не получаю ничего — ни признания, ни сил',
+];
+
+const neuroQuestions = [
+  'Мне трудно удерживать внимание на одном деле дольше 15-20 минут',
+  'У меня бывают провалы в памяти — забываю важные вещи или разговоры',
+  'Я замечаю, что реагирую слишком остро на звуки, свет или прикосновения',
+  'Мне сложно переключаться между задачами — нужно время, чтобы перестроиться',
+  'Я часто чувствую "туман в голове" — мысли путаются, сложно думать чётко',
+  'У меня бывают резкие перепады настроения без видимой причины',
+  'Мне трудно заснуть или я просыпаюсь ночью с беспокойными мыслями',
+  'Я замечаю, что стал(а) более импульсивным(ой) — говорю или делаю, не подумав',
+];
+
+type TestType = 'depression' | 'stress' | 'anxiety' | 'burnout' | 'neuro';
+
+const testConfig: Record<TestType, { label: string; icon: string; color: string; description: string }> = {
+  depression: {
+    label: 'Психологическое состояние',
+    icon: 'CloudRain',
+    color: 'text-blue-600',
+    description: 'Оцениваем уровень депрессии и общее эмоциональное самочувствие'
+  },
+  stress: {
+    label: 'Уровень стресса',
+    icon: 'Zap',
+    color: 'text-orange-600',
+    description: 'Измеряем хроническое напряжение и способность справляться с нагрузкой'
+  },
+  anxiety: {
+    label: 'Тревожность',
+    icon: 'AlertCircle',
+    color: 'text-yellow-600',
+    description: 'Выявляем тревожные паттерны и склонность к паническим реакциям'
+  },
+  burnout: {
+    label: 'Эмоциональное выгорание',
+    icon: 'Flame',
+    color: 'text-red-600',
+    description: 'Диагностируем степень профессионального и личностного выгорания'
+  },
+  neuro: {
+    label: 'Нейродиагностика',
+    icon: 'Brain',
+    color: 'text-purple-600',
+    description: 'Оцениваем когнитивные функции: внимание, память, регуляцию эмоций'
+  },
+};
+
+const testOrder: TestType[] = ['depression', 'stress', 'anxiety', 'burnout', 'neuro'];
+
+const allQuestions: Record<TestType, string[]> = {
+  depression: depressionQuestions,
+  stress: stressQuestions,
+  anxiety: anxietyQuestions,
+  burnout: burnoutQuestions,
+  neuro: neuroQuestions,
+};
+
+const shortLabels: Record<TestType, string> = {
+  depression: 'Психо',
+  stress: 'Стресс',
+  anxiety: 'Тревога',
+  burnout: 'Выгор.',
+  neuro: 'Нейро',
+};
+
 const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
-  const [currentTest, setCurrentTest] = useState<'depression' | 'stress' | 'anxiety'>('depression');
-  const [depressionAnswers, setDepressionAnswers] = useState<Record<number, number>>({});
-  const [stressAnswers, setStressAnswers] = useState<Record<number, number>>({});
-  const [anxietyAnswers, setAnxietyAnswers] = useState<Record<number, number>>({});
+  const [currentTestIndex, setCurrentTestIndex] = useState(0);
+  const [allAnswers, setAllAnswers] = useState<Record<TestType, Record<number, number>>>({
+    depression: {},
+    stress: {},
+    anxiety: {},
+    burnout: {},
+    neuro: {},
+  });
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [lastAnswer, setLastAnswer] = useState<number | undefined>(undefined);
 
-  const questions = currentTest === 'depression' ? depressionQuestions : currentTest === 'stress' ? stressQuestions : anxietyQuestions;
-  const answers = currentTest === 'depression' ? depressionAnswers : currentTest === 'stress' ? stressAnswers : anxietyAnswers;
-  const setAnswers = currentTest === 'depression' ? setDepressionAnswers : currentTest === 'stress' ? setStressAnswers : setAnxietyAnswers;
+  const currentTest = testOrder[currentTestIndex];
+  const questions = allQuestions[currentTest];
+  const answers = allAnswers[currentTest];
+  const config = testConfig[currentTest];
 
-  const progress = ((currentQuestion + 1) / questions.length) * 100;
+  const totalQuestions = testOrder.reduce((sum, t) => sum + allQuestions[t].length, 0);
+  const completedBefore = testOrder.slice(0, currentTestIndex).reduce((sum, t) => sum + allQuestions[t].length, 0);
+  const localProgress = ((currentQuestion + 1) / questions.length) * 100;
 
   const handleAnswer = (value: string) => {
     const numValue = parseInt(value);
-    setAnswers({ ...answers, [currentQuestion]: numValue });
-    setLastAnswer(numValue);
-  };
-
-  const calculateOverallProgress = (test: 'depression' | 'stress' | 'anxiety', questionIndex: number) => {
-    const totalQuestions = depressionQuestions.length + stressQuestions.length + anxietyQuestions.length;
-    let completedQuestions = 0;
-    
-    if (test === 'depression') {
-      completedQuestions = questionIndex + 1;
-    } else if (test === 'stress') {
-      completedQuestions = depressionQuestions.length + questionIndex + 1;
-    } else {
-      completedQuestions = depressionQuestions.length + stressQuestions.length + questionIndex + 1;
-    }
-    
-    return (completedQuestions / totalQuestions) * 100;
+    setAllAnswers(prev => ({
+      ...prev,
+      [currentTest]: { ...prev[currentTest], [currentQuestion]: numValue }
+    }));
   };
 
   const handleNext = () => {
     if (currentQuestion < questions.length - 1) {
-      const newQuestionIndex = currentQuestion + 1;
-      setCurrentQuestion(newQuestionIndex);
-      onProgressUpdate(calculateOverallProgress(currentTest, newQuestionIndex));
-      
-      if (answers[newQuestionIndex] === undefined && lastAnswer !== undefined) {
-        setAnswers({ ...answers, [newQuestionIndex]: lastAnswer });
-      }
+      const nextQ = currentQuestion + 1;
+      setCurrentQuestion(nextQ);
+      onProgressUpdate(((completedBefore + nextQ) / totalQuestions) * 100);
     } else {
-      if (currentTest === 'depression') {
-        setCurrentTest('stress');
+      if (currentTestIndex < testOrder.length - 1) {
+        const nextIndex = currentTestIndex + 1;
+        setCurrentTestIndex(nextIndex);
         setCurrentQuestion(0);
-        onProgressUpdate(calculateOverallProgress('stress', 0));
-        
-        if (stressAnswers[0] === undefined && lastAnswer !== undefined) {
-          setStressAnswers({ ...stressAnswers, [0]: lastAnswer });
-        }
-      } else if (currentTest === 'stress') {
-        setCurrentTest('anxiety');
-        setCurrentQuestion(0);
-        onProgressUpdate(calculateOverallProgress('anxiety', 0));
-        
-        if (anxietyAnswers[0] === undefined && lastAnswer !== undefined) {
-          setAnxietyAnswers({ ...anxietyAnswers, [0]: lastAnswer });
-        }
+        const nextCompleted = completedBefore + questions.length;
+        onProgressUpdate((nextCompleted / totalQuestions) * 100);
       } else {
-        const depScore = Object.values(depressionAnswers).reduce((a, b) => a + b, 0);
-        const stressScore = Object.values(stressAnswers).reduce((a, b) => a + b, 0);
-        const anxScore = Object.values(anxietyAnswers).reduce((a, b) => a + b, 0);
-        onComplete(depScore, stressScore, anxScore);
+        const finalAnswers = { ...allAnswers, [currentTest]: { ...allAnswers[currentTest], [currentQuestion]: allAnswers[currentTest][currentQuestion] } };
+        const scores = testOrder.map(t =>
+          Object.values(finalAnswers[t]).reduce((a, b) => a + b, 0)
+        );
+        onComplete(scores[0], scores[1], scores[2], scores[3], scores[4]);
       }
     }
   };
@@ -117,64 +172,94 @@ const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
   const handleBack = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
-    } else if (currentTest === 'stress') {
-      setCurrentTest('depression');
-      setCurrentQuestion(depressionQuestions.length - 1);
-    } else if (currentTest === 'anxiety') {
-      setCurrentTest('stress');
-      setCurrentQuestion(stressQuestions.length - 1);
+    } else if (currentTestIndex > 0) {
+      const prevIndex = currentTestIndex - 1;
+      const prevTest = testOrder[prevIndex];
+      setCurrentTestIndex(prevIndex);
+      setCurrentQuestion(allQuestions[prevTest].length - 1);
     }
   };
 
   const canProceed = answers[currentQuestion] !== undefined;
+  const isLastQuestion = currentTestIndex === testOrder.length - 1 && currentQuestion === questions.length - 1;
 
   return (
     <div className="max-w-3xl mx-auto">
+      <div className="mb-6 px-2">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 text-center mb-2">
+          🧠 Комплексная нейродиагностика ментального здоровья
+        </h2>
+        <p className="text-center text-gray-500 text-sm mb-4">
+          5 блоков диагностики · Психологическое состояние · Нейродиагностика · Эмоциональное выгорание
+        </p>
+        <div className="flex flex-wrap justify-center gap-2">
+          {testOrder.map((t, i) => {
+            const cfg = testConfig[t];
+            const isDone = i < currentTestIndex;
+            const isCurrent = i === currentTestIndex;
+            return (
+              <div
+                key={t}
+                className={`flex items-center gap-1 px-2 sm:px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                  isDone ? 'bg-green-100 text-green-700' :
+                  isCurrent ? 'bg-primary text-white shadow-md scale-105' :
+                  'bg-gray-100 text-gray-400'
+                }`}
+              >
+                {isDone ? <span>✓</span> : <span>{i + 1}</span>}
+                <span className="hidden sm:inline">{cfg.label}</span>
+                <span className="sm:hidden">{shortLabels[t]}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       <Card className="p-4 sm:p-8 shadow-lg">
         <div className="mb-6 sm:mb-8">
-          <div className="flex items-center justify-between mb-4 gap-2">
-            <h2 className="text-lg sm:text-2xl font-bold text-gray-900">
-              {currentTest === 'depression' ? 'Тест на депрессию' : currentTest === 'stress' ? 'Тест на стресс' : 'Тест на тревожность'}
-            </h2>
+          <div className="flex items-center justify-between mb-1 gap-2">
+            <div className="flex items-center gap-2">
+              <Icon name={config.icon} size={20} className={config.color} />
+              <h3 className="text-base sm:text-xl font-bold text-gray-900">{config.label}</h3>
+            </div>
             <span className="text-xs sm:text-sm text-gray-500 whitespace-nowrap">
               {currentQuestion + 1} из {questions.length}
             </span>
           </div>
-          <Progress value={progress} className="h-2" />
+          <p className="text-xs text-gray-500 mb-3 ml-7">{config.description}</p>
+          <Progress value={localProgress} className="h-2" />
         </div>
 
         <div className="mb-6 sm:mb-8">
-          <p className="text-base sm:text-lg mb-4 sm:mb-6 text-gray-700 leading-relaxed">{questions[currentQuestion]}</p>
+          <p className="text-base sm:text-lg mb-4 sm:mb-6 text-gray-700 leading-relaxed font-medium">
+            {questions[currentQuestion]}
+          </p>
 
           <RadioGroup
             value={answers[currentQuestion]?.toString()}
             onValueChange={handleAnswer}
           >
             <div className="space-y-3 sm:space-y-4">
-              <div className="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-lg border-2 border-gray-200 hover:border-primary transition-colors cursor-pointer">
-                <RadioGroupItem value="0" id="option-0" />
-                <Label htmlFor="option-0" className="cursor-pointer flex-1 text-sm sm:text-base">
-                  Совсем не согласен
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-lg border-2 border-gray-200 hover:border-primary transition-colors cursor-pointer">
-                <RadioGroupItem value="1" id="option-1" />
-                <Label htmlFor="option-1" className="cursor-pointer flex-1 text-sm sm:text-base">
-                  Скорее не согласен
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-lg border-2 border-gray-200 hover:border-primary transition-colors cursor-pointer">
-                <RadioGroupItem value="2" id="option-2" />
-                <Label htmlFor="option-2" className="cursor-pointer flex-1 text-sm sm:text-base">
-                  Скорее согласен
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-lg border-2 border-gray-200 hover:border-primary transition-colors cursor-pointer">
-                <RadioGroupItem value="3" id="option-3" />
-                <Label htmlFor="option-3" className="cursor-pointer flex-1 text-sm sm:text-base">
-                  Полностью согласен
-                </Label>
-              </div>
+              {[
+                { value: '0', label: 'Совсем не согласен / Никогда' },
+                { value: '1', label: 'Скорее не согласен / Редко' },
+                { value: '2', label: 'Скорее согласен / Иногда' },
+                { value: '3', label: 'Полностью согласен / Часто' },
+              ].map(opt => (
+                <div
+                  key={opt.value}
+                  className={`flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 rounded-lg border-2 transition-colors cursor-pointer ${
+                    answers[currentQuestion]?.toString() === opt.value
+                      ? 'border-primary bg-primary/5'
+                      : 'border-gray-200 hover:border-primary/50'
+                  }`}
+                >
+                  <RadioGroupItem value={opt.value} id={`option-${opt.value}`} />
+                  <Label htmlFor={`option-${opt.value}`} className="cursor-pointer flex-1 text-sm sm:text-base">
+                    {opt.label}
+                  </Label>
+                </div>
+              ))}
             </div>
           </RadioGroup>
         </div>
@@ -183,7 +268,7 @@ const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
           <Button
             variant="outline"
             onClick={handleBack}
-            disabled={currentTest === 'depression' && currentQuestion === 0}
+            disabled={currentTestIndex === 0 && currentQuestion === 0}
             className="gap-1 sm:gap-2 text-sm sm:text-base"
             size="default"
           >
@@ -196,10 +281,8 @@ const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
             className="gap-1 sm:gap-2 text-sm sm:text-base"
             size="default"
           >
-            {currentQuestion === questions.length - 1 && currentTest === 'anxiety'
-              ? 'Завершить'
-              : 'Далее'}
-            <Icon name="ChevronRight" size={16} className="sm:w-5 sm:h-5" />
+            {isLastQuestion ? 'Получить результаты' : 'Далее'}
+            <Icon name={isLastQuestion ? 'BarChart3' : 'ChevronRight'} size={16} className="sm:w-5 sm:h-5" />
           </Button>
         </div>
       </Card>

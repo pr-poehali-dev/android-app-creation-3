@@ -21,20 +21,26 @@ const Index = () => {
     depressionScore: number | null;
     stressScore: number | null;
     anxietyScore: number | null;
+    burnoutScore: number | null;
+    neuroScore: number | null;
     completed: boolean;
   }>({
     depressionScore: null,
     stressScore: null,
     anxietyScore: null,
+    burnoutScore: null,
+    neuroScore: null,
     completed: false,
   });
   const [overallProgress, setOverallProgress] = useState(0);
 
-  const handleTestComplete = (depressionScore: number, stressScore: number, anxietyScore: number) => {
+  const handleTestComplete = (depressionScore: number, stressScore: number, anxietyScore: number, burnoutScore: number, neuroScore: number) => {
     setTestResults({
       depressionScore,
       stressScore,
       anxietyScore,
+      burnoutScore,
+      neuroScore,
       completed: true,
     });
     setOverallProgress(100);
@@ -77,10 +83,10 @@ const Index = () => {
           </div>
           <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
             <Icon name="Brain" size={32} className="text-primary sm:w-10 sm:h-10" />
-            <h1 className="text-2xl sm:text-4xl font-bold text-gray-900">Узнайте уровень стресса за 5 минут</h1>
+            <h1 className="text-2xl sm:text-4xl font-bold text-gray-900">Бесплатная нейродиагностика ментального здоровья</h1>
           </div>
           <p className="text-gray-600 text-sm sm:text-lg px-4 mb-4">
-            ⚡ Научно обоснованный тест DASS-21 на депрессию, стресс и тревожность
+            🧠 Комплексный тест: психологическое состояние · эмоциональное выгорание · нейродиагностика
           </p>
           <div className="flex items-center justify-center gap-4 text-sm text-gray-500 mb-6">
             <div className="flex items-center gap-1">
@@ -163,6 +169,8 @@ const Index = () => {
               depressionScore={testResults.depressionScore!}
               stressScore={testResults.stressScore!}
               anxietyScore={testResults.anxietyScore!}
+              burnoutScore={testResults.burnoutScore!}
+              neuroScore={testResults.neuroScore!}
               onViewRecommendations={() => setActiveSection('recommendations')}
             />
           )}
@@ -171,6 +179,8 @@ const Index = () => {
               depressionScore={testResults.depressionScore!}
               stressScore={testResults.stressScore!}
               anxietyScore={testResults.anxietyScore!}
+              burnoutScore={testResults.burnoutScore!}
+              neuroScore={testResults.neuroScore!}
             />
           )}
           {activeSection === 'about' && <AboutTestSection />}

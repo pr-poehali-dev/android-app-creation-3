@@ -8,15 +8,17 @@ interface RecommendationsSectionProps {
   depressionScore: number;
   stressScore: number;
   anxietyScore: number;
+  burnoutScore: number;
+  neuroScore: number;
 }
 
-const RecommendationsSection = ({ depressionScore, stressScore, anxietyScore }: RecommendationsSectionProps) => {
+const RecommendationsSection = ({ depressionScore, stressScore, anxietyScore, burnoutScore, neuroScore }: RecommendationsSectionProps) => {
   const { toast } = useToast();
-  const needsProfessionalHelp = depressionScore > 12 || stressScore > 12 || anxietyScore > 12;
-  const hasModerateSymptoms = depressionScore > 6 || stressScore > 6 || anxietyScore > 6;
+  const needsProfessionalHelp = depressionScore > 12 || stressScore > 12 || anxietyScore > 12 || burnoutScore > 12 || neuroScore > 12;
+  const hasModerateSymptoms = depressionScore > 6 || stressScore > 6 || anxietyScore > 6 || burnoutScore > 6 || neuroScore > 6;
 
   const handleShare = async () => {
-    const shared = await shareResults(depressionScore, stressScore, anxietyScore);
+    const shared = await shareResults(depressionScore, stressScore, anxietyScore, burnoutScore, neuroScore);
     if (shared) {
       toast({
         title: 'Успешно поделились',
@@ -143,7 +145,7 @@ const RecommendationsSection = ({ depressionScore, stressScore, anxietyScore }: 
               className="flex gap-3 sm:gap-4 p-4 sm:p-5 rounded-lg bg-gradient-to-br from-gray-50 to-orange-50 border border-gray-200 hover:shadow-md transition-shadow"
             >
               <div className="bg-primary text-white p-2 sm:p-3 rounded-lg flex-shrink-0 h-fit">
-                <Icon name={rec.icon as any} size={20} className="sm:w-6 sm:h-6" />
+                <Icon name={rec.icon} size={20} className="sm:w-6 sm:h-6" />
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">{rec.title}</h3>
