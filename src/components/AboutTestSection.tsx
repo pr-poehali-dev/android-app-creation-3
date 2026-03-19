@@ -7,127 +7,179 @@ const AboutTestSection = () => {
       <Card className="p-6 sm:p-8 bg-white shadow-lg">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center">
-            <Icon name="BookOpen" size={24} className="text-white" />
+            <Icon name="Brain" size={24} className="text-white" />
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">О тесте DASS-21</h2>
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">О диагностике</h2>
+            <p className="text-sm text-gray-500">Комплексная нейродиагностика ментального здоровья</p>
+          </div>
         </div>
 
         <div className="space-y-6 text-gray-700">
-          <section>
+
+          <section className="bg-gradient-to-br from-purple-50 to-blue-50 p-6 rounded-lg border-2 border-purple-200">
             <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
-              <Icon name="Info" size={20} className="text-primary" />
-              Что такое DASS-21?
+              <Icon name="Layers" size={20} className="text-primary" />
+              Что включает комплексная диагностика?
             </h3>
-            <p className="leading-relaxed">
-              DASS-21 (Depression, Anxiety and Stress Scale) — это научно обоснованный психологический инструмент, 
-              разработанный учёными Университета Нового Южного Уэльса в Австралии. Тест состоит из 21 вопроса 
-              и измеряет три ключевых аспекта психологического состояния: депрессию, тревожность и стресс.
+            <p className="leading-relaxed mb-4">
+              Этот тест — не просто опросник. Это комплексный инструмент из 5 научно обоснованных блоков, 
+              который позволяет получить полную картину вашего психологического и нейропсихологического состояния. 
+              Я разработал эту диагностику, объединив проверенные методики в один удобный формат.
             </p>
-          </section>
-
-          <section className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg border-2 border-blue-200">
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
-              <Icon name="Award" size={20} className="text-primary" />
-              Научная валидность
-            </h3>
-            <ul className="space-y-2">
-              <li className="flex items-start gap-2">
-                <Icon name="CheckCircle" size={18} className="text-green-600 flex-shrink-0 mt-1" />
-                <span>Используется в клинической практике по всему миру более 30 лет</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Icon name="CheckCircle" size={18} className="text-green-600 flex-shrink-0 mt-1" />
-                <span>Валидирован в более чем 1000 научных исследований</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Icon name="CheckCircle" size={18} className="text-green-600 flex-shrink-0 mt-1" />
-                <span>Переведён на 40+ языков и адаптирован для разных культур</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Icon name="CheckCircle" size={18} className="text-green-600 flex-shrink-0 mt-1" />
-                <span>Высокая точность диагностики (надёжность α {'>'}  0.87)</span>
-              </li>
-            </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {[
+                { icon: 'CloudRain', color: 'bg-blue-100 text-blue-700 border-blue-200', label: 'Психологическое состояние', desc: 'На основе DASS-21' },
+                { icon: 'Zap', color: 'bg-orange-100 text-orange-700 border-orange-200', label: 'Уровень стресса', desc: 'Шкала стресса PSS' },
+                { icon: 'AlertCircle', color: 'bg-yellow-100 text-yellow-700 border-yellow-200', label: 'Тревожность', desc: 'GAD-адаптация' },
+                { icon: 'Flame', color: 'bg-red-100 text-red-700 border-red-200', label: 'Эмоциональное выгорание', desc: 'По модели Маслач' },
+                { icon: 'Brain', color: 'bg-purple-100 text-purple-700 border-purple-200', label: 'Нейродиагностика', desc: 'Когнитивные функции' },
+              ].map((block) => (
+                <div key={block.label} className={`p-3 rounded-lg border ${block.color}`}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Icon name={block.icon} size={16} />
+                    <span className="font-semibold text-sm">{block.label}</span>
+                  </div>
+                  <p className="text-xs opacity-75">{block.desc}</p>
+                </div>
+              ))}
+            </div>
           </section>
 
           <section>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Icon name="Target" size={20} className="text-primary" />
-              Что измеряет тест?
+              Что диагностирует каждый блок?
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-red-50 p-4 rounded-lg border border-red-200">
+            <div className="space-y-4">
+              <div className="p-4 rounded-lg border border-blue-200 bg-blue-50">
                 <div className="flex items-center gap-2 mb-2">
-                  <Icon name="CloudRain" size={20} className="text-red-600" />
-                  <h4 className="font-semibold text-gray-900">Депрессия</h4>
+                  <Icon name="CloudRain" size={20} className="text-blue-600" />
+                  <h4 className="font-semibold text-gray-900">Психологическое состояние</h4>
                 </div>
                 <p className="text-sm text-gray-600">
-                  Подавленность, потеря интереса к жизни, низкая самооценка, безнадёжность
+                  Выявляет признаки депрессии: подавленность, потерю интереса к жизни, снижение энергии, нарушения сна и аппетита, чувство вины и безнадёжности. Основан на международной шкале DASS-21.
                 </p>
               </div>
-              <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+              <div className="p-4 rounded-lg border border-orange-200 bg-orange-50">
                 <div className="flex items-center gap-2 mb-2">
-                  <Icon name="Zap" size={20} className="text-yellow-600" />
-                  <h4 className="font-semibold text-gray-900">Стресс</h4>
+                  <Icon name="Zap" size={20} className="text-orange-600" />
+                  <h4 className="font-semibold text-gray-900">Уровень стресса</h4>
                 </div>
                 <p className="text-sm text-gray-600">
-                  Напряжение, раздражительность, перегрузка, трудности с расслаблением
+                  Оценивает хроническое напряжение: перегрузку обязанностями, раздражительность, трудности с расслаблением, физические симптомы стресса (головные боли, бессонница), склонность к вредным привычкам.
                 </p>
               </div>
-              <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+              <div className="p-4 rounded-lg border border-yellow-200 bg-yellow-50">
                 <div className="flex items-center gap-2 mb-2">
-                  <Icon name="AlertTriangle" size={20} className="text-orange-600" />
+                  <Icon name="AlertCircle" size={20} className="text-yellow-600" />
                   <h4 className="font-semibold text-gray-900">Тревожность</h4>
                 </div>
                 <p className="text-sm text-gray-600">
-                  Беспокойство, паника, страхи, физические симптомы тревоги
+                  Диагностирует тревожные расстройства: беспочвенное беспокойство, панические атаки, избегающее поведение, физические проявления тревоги (сердцебиение, одышка, мышечное напряжение).
+                </p>
+              </div>
+              <div className="p-4 rounded-lg border border-red-200 bg-red-50">
+                <div className="flex items-center gap-2 mb-2">
+                  <Icon name="Flame" size={20} className="text-red-600" />
+                  <h4 className="font-semibold text-gray-900">Эмоциональное выгорание</h4>
+                </div>
+                <p className="text-sm text-gray-600">
+                  Основан на модели выгорания Кристины Маслач. Выявляет эмоциональное истощение, деперсонализацию (цинизм, равнодушие), снижение профессиональной эффективности и потерю смысла деятельности.
+                </p>
+              </div>
+              <div className="p-4 rounded-lg border border-purple-200 bg-purple-50">
+                <div className="flex items-center gap-2 mb-2">
+                  <Icon name="Brain" size={20} className="text-purple-600" />
+                  <h4 className="font-semibold text-gray-900">Нейродиагностика</h4>
+                </div>
+                <p className="text-sm text-gray-600">
+                  Оценивает когнитивные функции и состояние нервной системы: концентрацию внимания, кратковременную память, сенсорную чувствительность, когнитивную гибкость, эмоциональную регуляцию и импульсный контроль.
                 </p>
               </div>
             </div>
           </section>
 
+          <section className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg border-2 border-blue-200">
+            <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <Icon name="Award" size={20} className="text-primary" />
+              Научная основа
+            </h3>
+            <ul className="space-y-2">
+              {[
+                'DASS-21 используется в клинической практике более 30 лет и валидирован в 1000+ исследованиях',
+                'Модель выгорания Маслач — золотой стандарт диагностики профессионального выгорания',
+                'Нейропсихологические методики адаптированы из клинической практики оценки когнитивных функций',
+                'Комплексный подход позволяет выявить взаимосвязи между разными аспектами ментального здоровья',
+                'Методики переведены и адаптированы для русскоязычной аудитории',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2">
+                  <Icon name="CheckCircle" size={18} className="text-green-600 flex-shrink-0 mt-1" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
           <section>
             <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
               <Icon name="HelpCircle" size={20} className="text-primary" />
-              Как интерпретировать результаты?
+              Шкала интерпретации результатов
             </h3>
-            <div className="bg-gray-50 p-5 rounded-lg border border-gray-200">
+            <div className="bg-gray-50 p-5 rounded-lg border border-gray-200 overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-300">
                     <th className="text-left py-2 font-semibold text-gray-900">Уровень</th>
-                    <th className="text-center py-2 font-semibold text-gray-900">Депрессия</th>
-                    <th className="text-center py-2 font-semibold text-gray-900">Стресс</th>
-                    <th className="text-center py-2 font-semibold text-gray-900">Тревожность</th>
+                    <th className="text-center py-2 font-semibold text-gray-900">Баллы</th>
+                    <th className="text-left py-2 font-semibold text-gray-900 pl-4">Что означает</th>
                   </tr>
                 </thead>
                 <tbody className="text-gray-700">
                   <tr className="border-b border-gray-200">
-                    <td className="py-2">Норма</td>
-                    <td className="text-center">0-6</td>
-                    <td className="text-center">0-6</td>
-                    <td className="text-center">0-6</td>
+                    <td className="py-2 text-green-700 font-medium">🟢 Норма (Низкий)</td>
+                    <td className="text-center">0–6</td>
+                    <td className="pl-4 text-xs">Всё в порядке, состояние стабильное</td>
                   </tr>
                   <tr className="border-b border-gray-200">
-                    <td className="py-2">Лёгкая степень</td>
-                    <td className="text-center">7-12</td>
-                    <td className="text-center">7-12</td>
-                    <td className="text-center">7-12</td>
+                    <td className="py-2 text-yellow-700 font-medium">🟡 Умеренный</td>
+                    <td className="text-center">7–12</td>
+                    <td className="pl-4 text-xs">Есть тревожные сигналы, стоит обратить внимание</td>
                   </tr>
                   <tr className="border-b border-gray-200">
-                    <td className="py-2">Средняя степень</td>
-                    <td className="text-center">13-18</td>
-                    <td className="text-center">13-18</td>
-                    <td className="text-center">13-18</td>
+                    <td className="py-2 text-orange-700 font-medium">🟠 Средний</td>
+                    <td className="text-center">13–18</td>
+                    <td className="pl-4 text-xs">Рекомендована консультация специалиста</td>
                   </tr>
                   <tr>
-                    <td className="py-2">Высокая степень</td>
-                    <td className="text-center">19-24</td>
-                    <td className="text-center">19-24</td>
-                    <td className="text-center">19-24</td>
+                    <td className="py-2 text-red-700 font-medium">🔴 Высокий</td>
+                    <td className="text-center">19–24</td>
+                    <td className="pl-4 text-xs">Необходима профессиональная помощь</td>
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </section>
+
+          <section>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <Icon name="Users" size={20} className="text-primary" />
+              Кому подходит эта диагностика?
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {[
+                'Тем, кто чувствует хроническую усталость и не понимает причину',
+                'Людям, испытывающим тревогу или панические атаки',
+                'Тем, кто подозревает у себя выгорание на работе',
+                'Тем, кто хочет понять своё психологическое состояние',
+                'Людям, замечающим снижение концентрации и памяти',
+                'Всем, кто заботится о своём ментальном здоровье',
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-2 p-3 bg-green-50 rounded-lg border border-green-200">
+                  <Icon name="Check" size={18} className="text-green-600 flex-shrink-0 mt-1" />
+                  <span className="text-sm text-gray-700">{item}</span>
+                </div>
+              ))}
             </div>
           </section>
 
@@ -137,104 +189,60 @@ const AboutTestSection = () => {
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">Важно помнить</h3>
                 <ul className="space-y-2 text-sm text-gray-700">
-                  <li className="flex items-start gap-2">
-                    <span className="text-amber-600">•</span>
-                    <span>Тест не заменяет консультацию специалиста — это инструмент самооценки</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-amber-600">•</span>
-                    <span>Для точного диагноза обратитесь к квалифицированному психологу или психиатру</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-amber-600">•</span>
-                    <span>Результаты отражают ваше состояние за последнюю неделю</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-amber-600">•</span>
-                    <span>При высоких показателях рекомендуется профессиональная помощь</span>
-                  </li>
+                  {[
+                    'Тест не заменяет консультацию специалиста — это инструмент самооценки и первичной диагностики',
+                    'Результаты отражают ваше состояние за последние 1-2 недели',
+                    'При высоких показателях обратитесь к квалифицированному психологу — это важно для вашего здоровья',
+                    'Диагностика полностью конфиденциальна — ваши результаты нигде не сохраняются',
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2">
+                      <span className="text-amber-600 mt-1">•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
           </section>
 
-          <section>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
-              <Icon name="Users" size={20} className="text-primary" />
-              Кому подходит тест?
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="flex items-start gap-2 p-3 bg-green-50 rounded-lg">
-                <Icon name="Check" size={18} className="text-green-600 flex-shrink-0 mt-1" />
-                <span className="text-sm">Людям, испытывающим эмоциональные трудности</span>
+          <section className="bg-gradient-to-br from-orange-50 to-amber-50 p-6 rounded-lg border-2 border-primary">
+            <div className="flex items-start gap-3">
+              <div className="bg-primary text-white p-2 rounded-full flex-shrink-0">
+                <Icon name="UserRound" size={20} />
               </div>
-              <div className="flex items-start gap-2 p-3 bg-green-50 rounded-lg">
-                <Icon name="Check" size={18} className="text-green-600 flex-shrink-0 mt-1" />
-                <span className="text-sm">Тем, кто хочет следить за своим ментальным здоровьем</span>
-              </div>
-              <div className="flex items-start gap-2 p-3 bg-green-50 rounded-lg">
-                <Icon name="Check" size={18} className="text-green-600 flex-shrink-0 mt-1" />
-                <span className="text-sm">Людям в период стрессовых жизненных событий</span>
-              </div>
-              <div className="flex items-start gap-2 p-3 bg-green-50 rounded-lg">
-                <Icon name="Check" size={18} className="text-green-600 flex-shrink-0 mt-1" />
-                <span className="text-sm">Тем, кто проходит психотерапию (для отслеживания прогресса)</span>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
-              <Icon name="Lightbulb" size={20} className="text-primary" />
-              Преимущества DASS-21
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex gap-3 p-4 bg-gray-50 rounded-lg">
-                <Icon name="Clock" size={20} className="text-primary flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-1">Быстро</h4>
-                  <p className="text-sm text-gray-600">Занимает всего 5 минут</p>
-                </div>
-              </div>
-              <div className="flex gap-3 p-4 bg-gray-50 rounded-lg">
-                <Icon name="Shield" size={20} className="text-primary flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-1">Надёжно</h4>
-                  <p className="text-sm text-gray-600">Научно проверенная методика</p>
-                </div>
-              </div>
-              <div className="flex gap-3 p-4 bg-gray-50 rounded-lg">
-                <Icon name="Eye" size={20} className="text-primary flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-1">Анонимно</h4>
-                  <p className="text-sm text-gray-600">Данные не сохраняются</p>
-                </div>
-              </div>
-              <div className="flex gap-3 p-4 bg-gray-50 rounded-lg">
-                <Icon name="BarChart3" size={20} className="text-primary flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-gray-900 mb-1">Подробно</h4>
-                  <p className="text-sm text-gray-600">Оценка по трём шкалам</p>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">От психолога</h3>
+                <p className="text-sm text-gray-700 mb-3 leading-relaxed">
+                  Я создал эту диагностику, чтобы вы могли быстро и точно понять своё состояние. 
+                  Часто люди годами живут с тревогой, выгоранием или депрессией, не понимая, что с ними происходит. 
+                  Эта диагностика — первый шаг к ясности и изменениям.
+                </p>
+                <p className="text-sm text-primary font-semibold">
+                  Если результаты вас насторожили — напишите мне. Вместе мы разберёмся и найдём путь к лучшему состоянию 💚
+                </p>
+                <div className="flex flex-col sm:flex-row gap-2 mt-4">
+                  <a
+                    href="https://кабинет-хорошего-психолога.рф"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-primary underline hover:text-primary/80"
+                  >
+                    кабинет-хорошего-психолога.рф
+                  </a>
+                  <span className="hidden sm:inline text-gray-400">·</span>
+                  <a
+                    href="https://wa.me/79602586060"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-green-600 underline hover:text-green-700"
+                  >
+                    WhatsApp: +7 960 258-60-60
+                  </a>
                 </div>
               </div>
             </div>
           </section>
-        </div>
-      </Card>
 
-      <Card className="p-6 sm:p-8 bg-gradient-to-br from-orange-50 to-amber-50 border-2 border-primary">
-        <div className="text-center">
-          <h3 className="text-xl font-bold text-gray-900 mb-3">Источники и литература</h3>
-          <div className="text-sm text-gray-700 space-y-2">
-            <p>
-              Lovibond, S.H. & Lovibond, P.F. (1995). Manual for the Depression Anxiety Stress Scales. 
-              Sydney: Psychology Foundation.
-            </p>
-            <p>
-              Henry, J.D. & Crawford, J.R. (2005). The short-form version of the Depression Anxiety Stress Scales (DASS-21): 
-              Construct validity and normative data in a large non-clinical sample. British Journal of Clinical Psychology, 44, 227-239.
-            </p>
-          </div>
         </div>
       </Card>
     </div>
