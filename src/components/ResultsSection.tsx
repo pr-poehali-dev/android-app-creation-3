@@ -243,9 +243,9 @@ const ResultsSection = ({ depressionScore, stressScore, anxietyScore, burnoutSco
                   </a>
                 </Button>
                 <Button size="default" variant="outline" asChild className="gap-1 sm:gap-2 text-sm sm:text-base w-full sm:w-auto">
-                  <a href="https://wa.me/79500233838" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/79602586060" target="_blank" rel="noopener noreferrer">
                     <Icon name="MessageCircle" size={16} className="sm:w-5 sm:h-5" />
-                    <span className="hidden xs:inline">WhatsApp: </span>+7 950 023-38-38
+                    <span className="hidden xs:inline">WhatsApp: </span>+7 960 258-60-60
                   </a>
                 </Button>
               </div>
