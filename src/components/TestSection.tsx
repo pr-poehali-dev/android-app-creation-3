@@ -236,6 +236,7 @@ const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
           </p>
 
           <RadioGroup
+            key={`${currentTest}-${currentQuestion}`}
             value={answers[currentQuestion]?.toString()}
             onValueChange={handleAnswer}
           >
