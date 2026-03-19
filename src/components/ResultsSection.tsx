@@ -58,7 +58,7 @@ const ResultsSection = ({ depressionScore, stressScore, anxietyScore, burnoutSco
       <Card className="p-4 sm:p-8 shadow-lg">
         <h2 className="text-xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
           <Icon name="BarChart3" size={24} className="text-primary sm:w-8 sm:h-8" />
-          Результаты нейродиагностики
+          Результаты комплексной диагностики
         </h2>
 
         <div className="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg border-2 border-primary">

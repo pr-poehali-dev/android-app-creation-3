@@ -83,10 +83,10 @@ const Index = () => {
           </div>
           <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
             <Icon name="Brain" size={32} className="text-primary sm:w-10 sm:h-10" />
-            <h1 className="text-2xl sm:text-4xl font-bold text-gray-900">Бесплатная нейродиагностика ментального здоровья</h1>
+            <h1 className="text-2xl sm:text-4xl font-bold text-gray-900">Комплексная психологическая диагностика</h1>
           </div>
           <p className="text-gray-600 text-sm sm:text-lg px-4 mb-4">
-            🧠 Комплексный тест: психологическое состояние · эмоциональное выгорание · нейродиагностика
+            🧠 С элементами нейропсихологической диагностики · стресс · тревожность · выгорание · когнитивные функции
           </p>
           <div className="flex items-center justify-center gap-4 text-sm text-gray-500 mb-6">
             <div className="flex items-center gap-1">

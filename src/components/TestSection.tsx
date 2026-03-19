@@ -187,10 +187,10 @@ const TestSection = ({ onComplete, onProgressUpdate }: TestSectionProps) => {
     <div className="max-w-3xl mx-auto">
       <div className="mb-6 px-2">
         <h2 className="text-xl sm:text-2xl font-bold text-gray-900 text-center mb-2">
-          🧠 Комплексная нейродиагностика ментального здоровья
+          🧠 Комплексная психологическая диагностика
         </h2>
         <p className="text-center text-gray-500 text-sm mb-4">
-          5 блоков диагностики · Психологическое состояние · Нейродиагностика · Эмоциональное выгорание
+          С элементами нейропсихологической диагностики · 5 блоков · Стресс · Тревожность · Выгорание · Когнитивные функции
         </p>
         <div className="flex flex-wrap justify-center gap-2">
           {testOrder.map((t, i) => {
